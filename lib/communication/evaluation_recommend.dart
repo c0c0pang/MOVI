@@ -9,10 +9,58 @@ class evaluation_recommend extends StatefulWidget {
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
   TextEditingController _tec = TextEditingController();
+  final List<String> comments = <String>[
+    '최신 음악 무제한',
+    '뮤직비디오 무제한',
+    '음악 라이브러리 공유',
+    '뮤직비디오 업로드',
+    '뮤직비디오 공유 무제한'
+  ];
+
+  final List<IconData> icons = <IconData>[
+    Icons.music_note,
+    Icons.music_video,
+    Icons.library_music,
+    Icons.videocam,
+    Icons.video_library
+  ];
+
+  final List<String> wons = <String>[
+    "5,000",
+    "7,000",
+    "9,000",
+    "10,000",
+    "15,000",
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return _search();
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        _search(),
+        GestureDetector(
+          onTap: (){
+            print('포스팅 업로드');
+          },
+          child: Container(
+
+            margin: EdgeInsets.all(40),
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1000),
+              color: Colors.grey,
+            ),
+            child: Icon(Icons.create,size: 30),
+          ),
+        )
+
+      ],
+    );
   }
+
+
 
   Container _search(){
     return Container(
