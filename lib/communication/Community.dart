@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import './evaluation_recommend.dart';
 class COMMUNITY extends StatefulWidget {
   const COMMUNITY({super.key});
 
@@ -26,9 +26,12 @@ class mainCommunityPage extends State<COMMUNITY> {
                   '자유게시판', style: TextStyle(color: Colors.black, fontSize: 18)))
             ], indicatorColor: Colors.black,
           ),
+
         ),
         body: TabBarView(
           children: [
+            evaluation_recommend(),
+            evaluation_recommend(),
           ],
         ),
       ),
