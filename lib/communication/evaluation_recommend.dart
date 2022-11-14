@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../models/post.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class evaluation_recommend extends StatefulWidget {
   const evaluation_recommend({Key? key}) : super(key: key);
@@ -9,51 +11,62 @@ class evaluation_recommend extends StatefulWidget {
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
   TextEditingController _tec = TextEditingController();
-  List<String> title = <String>[
-    '클레멘타인 이 영화 꼭 봐야함',
-    '잉여왕 이 영화 꼭 봐야함',
-    '바람둥이왕 신권일 이 영화 꼭 봐야함',
-    'last stardust 이 영화 꼭 봐야함',
-    '패션왕 이 영화 꼭 보면 안돼'
-  ];
-  List<String> users = <String>[
-    '익명1',
-    '익명2',
-    '익명3',
-    '익명4',
-    '익명5',
-  ];
-  final List<IconData> icons = <IconData>[
-    Icons.account_circle,
-    Icons.account_circle,
-    Icons.account_circle,
-    Icons.account_circle,
-    Icons.account_circle,
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  void _onReplyRefresh() async{
+    await Future.delayed(Duration(microseconds: 100));
+    setState(() {
+      userTable.sort((a,b)=>a.reply!.compareTo(b.reply!));
+    });
+    _refreshController.refreshCompleted();
+  }
+  void _onLikeRefresh() async{
+    await Future.delayed(Duration(microseconds: 100));
+    setState(() {
+      userTable.sort((a,b)=>a.like!.compareTo(b.like!));
+    });
+    _refreshController.refreshCompleted();
+  }
+  List<Post> userTable = <Post>[
+    Post(
+        name: '익명1',
+        icons: Icons.account_circle,
+        title: '클레멘타인 이 영화 꼭 봐야함',
+        comments: "아무내용...",
+        like: 1,
+        reply: 5),
+    Post(
+        name: '익명2',
+        icons: Icons.account_circle,
+        title: '바람둥이왕 신권일 이 영화 꼭 봐야함',
+        comments: "아무내용...",
+        like: 2,
+        reply: 5),
+    Post(
+        name: '익명3',
+        icons: Icons.account_circle,
+        title: '잉여왕 이 영화 꼭 봐야함',
+        comments: "아무내용...",
+        like: 3,
+        reply: 6),
+    Post(
+        name: '익명4',
+        icons: Icons.account_circle,
+        title: 'last stardust 이 영화 꼭 봐야함',
+        comments: "아무내용...",
+        like: 5,
+        reply: 2),
+    Post(
+        name: '익명5',
+        icons: Icons.account_circle,
+        title: '패션왕 이 영화 꼭 보면 안돼',
+        comments: "아무내용...",
+        like: 4,
+        reply: 5),
   ];
 
-  final List<String> comments = <String>[
-    "아무내용...",
-    "아무내용...",
-    "아무내용...",
-    "아무내용...",
-    "아무내용...",
-  ];
-  final List<int> favorite = <int>[
-    1,
-    2,
-    3,
-    4,
-    5,
-  ];
-  final List<int> reply = <int>[
-    2,
-    4,
-    6,
-    2,
-    6,
-  ];
 
   @override
+
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -84,7 +97,9 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
             Container(
               margin: EdgeInsets.only(right: 15),
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _onReplyRefresh();
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -97,7 +112,9 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
             ),
             Container(
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _onLikeRefresh();
+                  },
                   child: Row(
                     children: [
                       Icon(
@@ -115,7 +132,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
   Widget _postCard() {
     return ListView.separated(
       padding: EdgeInsets.all(8),
-      itemCount: title.length,
+      itemCount: userTable.length,
       itemBuilder: (context, index) {
         return Card(
           color: Colors.grey[100],
@@ -131,24 +148,23 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        icons[index],
+                        userTable[index].icons,
                         color: Colors.grey[1],
                         size: 35,
                       ),
-                      Text('${users[index]}',
+                      Text('${userTable[index].name}',
                           style: TextStyle(height: 1.5, fontSize: 13)),
                     ],
                   ),
-
                   title: Container(
                     margin: EdgeInsets.only(top: 10),
-                    child:Text('제목 : ${title[index]}'),
+                    child: Text('제목 : ${userTable[index].title}'),
                   ),
                   subtitle: Row(
                     children: [
                       Container(
                         margin: EdgeInsets.only(bottom: 15),
-                        child: Text('내용 : ${comments[index]}',
+                        child: Text('내용 : ${userTable[index].comments}',
                             style: TextStyle(height: 2)),
                       ),
                       Container(
@@ -157,7 +173,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                           children: [
                             Icon(Icons.favorite,
                                 size: 20, color: Colors.redAccent),
-                            Text('${favorite[index]}'),
+                            Text('${userTable[index].like}'),
                           ],
                         ),
                       ),
@@ -166,7 +182,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         child: Row(
                           children: [
                             Icon(Icons.chat_bubble_outline, size: 20),
-                            Text('${reply[index]}'),
+                            Text('${userTable[index].reply}'),
                           ],
                         ),
                       ),
