@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './evaluation_recommend.dart';
+import 'package:get/get.dart';
 class COMMUNITY extends StatefulWidget {
   const COMMUNITY({super.key});
 
@@ -10,7 +11,7 @@ class COMMUNITY extends StatefulWidget {
 class mainCommunityPage extends State<COMMUNITY> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: DefaultTabController(
+    return GetMaterialApp(home: DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(

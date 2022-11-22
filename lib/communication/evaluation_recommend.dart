@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../models/post.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'package:get/get.dart';
+import '../page/CreatePostPage.dart';
 class evaluation_recommend extends StatefulWidget {
   const evaluation_recommend({Key? key}) : super(key: key);
 
@@ -11,62 +12,74 @@ class evaluation_recommend extends StatefulWidget {
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
   TextEditingController _tec = TextEditingController();
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
-  void _onReplyRefresh() async{
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
+  void _onNewRefresh() async {
     await Future.delayed(Duration(microseconds: 100));
     setState(() {
-      userTable.sort((a,b)=>a.reply!.compareTo(b.reply!));
+      userTable.sort((a, b) => b.key!.compareTo(a.key!));
     });
     _refreshController.refreshCompleted();
   }
-  void _onLikeRefresh() async{
+
+  void _onLikeRefresh() async {
     await Future.delayed(Duration(microseconds: 100));
     setState(() {
-      userTable.sort((a,b)=>a.like!.compareTo(b.like!));
+      userTable.sort((a, b) => b.like!.compareTo(a.like!));
     });
     _refreshController.refreshCompleted();
   }
+
   List<Post> userTable = <Post>[
     Post(
-        name: '익명1',
-        icons: Icons.account_circle,
-        title: '클레멘타인 이 영화 꼭 봐야함',
-        comments: "아무내용...",
-        like: 1,
-        reply: 5),
+      name: '익명5',
+      icons: Icons.account_circle,
+      title: '클레멘타인 이 영화 꼭 봐야함',
+      comments: "아무내용...",
+      like: 1,
+      reply: 5,
+      key: 5,
+    ),
     Post(
-        name: '익명2',
-        icons: Icons.account_circle,
-        title: '바람둥이왕 신권일 이 영화 꼭 봐야함',
-        comments: "아무내용...",
-        like: 2,
-        reply: 5),
+      name: '익명4',
+      icons: Icons.account_circle,
+      title: '바람둥이왕 신권일 이 영화 꼭 봐야함',
+      comments: "아무내용...",
+      like: 2,
+      reply: 5,
+      key: 4,
+    ),
     Post(
-        name: '익명3',
-        icons: Icons.account_circle,
-        title: '잉여왕 이 영화 꼭 봐야함',
-        comments: "아무내용...",
-        like: 3,
-        reply: 6),
+      name: '익명3',
+      icons: Icons.account_circle,
+      title: '잉여왕 이 영화 꼭 봐야함',
+      comments: "아무내용...",
+      like: 3,
+      reply: 6,
+      key: 3,
+    ),
     Post(
-        name: '익명4',
-        icons: Icons.account_circle,
-        title: 'last stardust 이 영화 꼭 봐야함',
-        comments: "아무내용...",
-        like: 5,
-        reply: 2),
+      name: '익명2',
+      icons: Icons.account_circle,
+      title: 'last stardust 이 영화 꼭 봐야함',
+      comments: "아무내용...",
+      like: 5,
+      reply: 2,
+      key: 2,
+    ),
     Post(
-        name: '익명5',
-        icons: Icons.account_circle,
-        title: '패션왕 이 영화 꼭 보면 안돼',
-        comments: "아무내용...",
-        like: 4,
-        reply: 5),
+      name: '익명1',
+      icons: Icons.account_circle,
+      title: '패션왕 이 영화 꼭 보면 안돼',
+      comments: "아무내용...",
+      like: 4,
+      reply: 5,
+      key: 1,
+    ),
   ];
 
-
   @override
-
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -98,7 +111,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
               margin: EdgeInsets.only(right: 15),
               child: GestureDetector(
                   onTap: () {
-                    _onReplyRefresh();
+                    _onNewRefresh();
                   },
                   child: Row(
                     children: [
@@ -199,11 +212,41 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
   }
 
   Widget _postWrite() {
+    void _showDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            title: new Text("게시물 작성"),
+            content: new Text("게시물을 작성 하시겠습니까?"),
+            shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(8.0)
+            ),
+            actions: <Widget>[
+              new TextButton(
+                child: new Text("예"),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Get.to(CreatePostPage());
+                },
+              ),
+              new TextButton(
+                child: new Text("아니요"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
     return Container(
         alignment: Alignment.bottomRight,
         child: GestureDetector(
           onTap: () {
-            print('포스팅 업로드');
+            _showDialog();
           },
           child: Container(
             margin: EdgeInsets.all(40),
@@ -240,6 +283,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                       child: TextField(
                         controller: _tec,
                         style: TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: '게시물 제목, 내용, 작성자 검색',
