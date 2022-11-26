@@ -3,34 +3,14 @@ import '../models/post.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:get/get.dart';
 import '../page/CreatePostPage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class evaluation_recommend extends StatefulWidget {
   const evaluation_recommend({Key? key}) : super(key: key);
-
   @override
   State<evaluation_recommend> createState() => _evaluation_recommendState();
 }
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
-  TextEditingController _tec = TextEditingController();
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-
-  void _onNewRefresh() async {
-    await Future.delayed(Duration(microseconds: 100));
-    setState(() {
-      userTable.sort((a, b) => b.key!.compareTo(a.key!));
-    });
-    _refreshController.refreshCompleted();
-  }
-
-  void _onLikeRefresh() async {
-    await Future.delayed(Duration(microseconds: 100));
-    setState(() {
-      userTable.sort((a, b) => b.like!.compareTo(a.like!));
-    });
-    _refreshController.refreshCompleted();
-  }
-
   List<Post> userTable = <Post>[
     Post(
       name: '익명5',
@@ -78,6 +58,25 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
       key: 1,
     ),
   ];
+  TextEditingController _tec = TextEditingController();
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
+  void _onNewRefresh() async {
+    await Future.delayed(Duration(microseconds: 100));
+    setState(() {
+      userTable.sort((a, b) => b.key!.compareTo(a.key!));
+    });
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLikeRefresh() async {
+    await Future.delayed(Duration(microseconds: 100));
+    setState(() {
+      userTable.sort((a, b) => b.like!.compareTo(a.like!));
+    });
+    _refreshController.refreshCompleted();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,71 +142,92 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
   }
 
   Widget _postCard() {
-    return ListView.separated(
-      padding: EdgeInsets.all(8),
-      itemCount: userTable.length,
-      itemBuilder: (context, index) {
-        return Card(
-          color: Colors.grey[100],
-          margin: EdgeInsets.all(3),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Container(
-              height: 90,
-              child: ListTile(
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        userTable[index].icons,
-                        color: Colors.grey[1],
-                        size: 35,
+    // getData();
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
+      builder: (context,snapshot){
+        final items = snapshot.requireData;
+        return ListView.separated(
+          padding: EdgeInsets.all(8),
+          itemCount: items.size,
+          itemBuilder: (context, index) {
+            return Card(
+              color: Colors.grey[100],
+              margin: EdgeInsets.all(3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Container(
+                  height: 60,
+                  padding: EdgeInsets.all(2),
+                  child: ListTile(
+                      leading: Container(
+                        margin: EdgeInsets.only(top: 1),
+                         child: Column(
+                           mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             Icon(
+                               Icons.account_circle,
+                               color: Colors.grey[1],
+                               size: 35,
+                             ),
+                             Text('${items.docs[index]['user']}',
+                                 style: TextStyle(height: 1.5, fontSize: 13)),
+                           ],
+                         ),
                       ),
-                      Text('${userTable[index].name}',
-                          style: TextStyle(height: 1.5, fontSize: 13)),
-                    ],
-                  ),
-                  title: Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Text('제목 : ${userTable[index].title}'),
-                  ),
-                  subtitle: Row(
+                      title: Container(
+                        margin: EdgeInsets.only(top: 20),
+                        child: Text('제목 : ${items.docs[index]['title']}'),
+                      ),
+                      subtitle: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 15),
+                            child: Text('내용 : ${items.docs[index]['explain']}',
+                                style: TextStyle(height: 2),maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+
+                        ],
+                      )),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 5),
+                  child: Row(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 15),
-                        child: Text('내용 : ${userTable[index].comments}',
-                            style: TextStyle(height: 2)),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 150, top: 20, right: 10),
+                        margin: EdgeInsets.only(left: 320, top: 10, right: 10),
                         child: Row(
                           children: [
                             Icon(Icons.favorite,
                                 size: 20, color: Colors.redAccent),
-                            Text('${userTable[index].like}'),
+                            Text('${items.docs[index]['like']}'),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: EdgeInsets.only(top: 10),
                         child: Row(
                           children: [
                             Icon(Icons.chat_bubble_outline, size: 20),
-                            Text('${userTable[index].reply}'),
+                            Text('${items.docs[index]['reply']}'),
                           ],
                         ),
                       ),
                     ],
-                  )),
-            ),
-          ]),
+                  ),
+                )
+              ]),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider();
+          },
         );
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
+      }
     );
   }
 
