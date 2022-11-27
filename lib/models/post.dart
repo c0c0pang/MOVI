@@ -1,14 +1,21 @@
+import 'package:flutter/widgets.dart';
 class Post{
-  String key;
-  String title;
-  String explain;
-  int like;
-  int reply;
+  String? name;
+  IconData? icons;
+  String? title;
+  String? comments;
+  int? like;
+  int? reply;
+  int? key;
   Post({
-    @required this.key,
+    this.name,
+    this.icons,
     this.title,
-    this.explain,
+    this.comments,
     this.like,
-    this.reply
+    this.reply,
+    this.key
 });
+  // @override
+  // String toString() => 'Post $like mph';
 }
