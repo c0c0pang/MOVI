@@ -50,23 +50,21 @@ class FriendListView extends State<FriendList>{
       itemBuilder: (context, int index) {
         return Row(
             children: [
-              Icon(
-                data[index].icons,
-                size: 100,
-              ),
               Expanded(
-                  child: Container(
-                    height: 140,
-                    padding: EdgeInsets.all(30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(data[index].name,
-                          style: TextStyle(fontSize: 30),
-                        )
-                      ],
+                child: Container(
+                  height: 80,
+                  child: ListTile(
+                    title:Container(
+                      child: Text(data[index].name,style: TextStyle(
+                          fontSize: 30,
+                      ),)
                     ),
+                    leading: Icon(data[index].icons,size: 80),
+                    onTap: (){
+                      print("눌러짐");
+                    },
                   )
+                )
               )
             ]
         );
@@ -77,4 +75,6 @@ class FriendListView extends State<FriendList>{
       ),
     );
   }
+
+
 }

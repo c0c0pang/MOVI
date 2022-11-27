@@ -7,6 +7,7 @@ class ChattingRoomModel {
   final String recentMessage;
   final IconData? icons;
   final Timestamp? timestamp;
+  final List<String> content;
 
 
   ChattingRoomModel({
@@ -15,6 +16,7 @@ class ChattingRoomModel {
     this.recentMessage='',
     this.icons,
     this.timestamp,
+    required this.content,
   });
 
 
