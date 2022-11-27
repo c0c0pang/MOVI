@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moviproject/chatting/Chatting.dart';
 import 'package:moviproject/message_list_screen.dart';
 import './communication/Community.dart';
 import './matching/Match.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MATCH(),
+      home: const Chatting(),
     );
   }
 }
