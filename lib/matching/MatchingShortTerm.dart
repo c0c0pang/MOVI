@@ -45,11 +45,13 @@ class ShortTermState extends State<MatchingShortTerm>{
       area:"서울",
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
+    List<MatchModel> outputData=data;
     return ListView.separated(
       padding: const EdgeInsets.all(8),
-      itemCount: data.length,
+      itemCount: outputData.length,
       itemBuilder: (context,int index){
         return Row(
             children: [
@@ -66,7 +68,7 @@ class ShortTermState extends State<MatchingShortTerm>{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(data[index].movieTitle,
+                        Text(outputData[index].movieTitle,
                           style: TextStyle(fontSize: 30),
                         ),
                         Row(
@@ -75,7 +77,7 @@ class ShortTermState extends State<MatchingShortTerm>{
                             Text('날짜',
                               style: TextStyle(fontSize: 20),
                             ),
-                            Text(data[index].date,
+                            Text(outputData[index].date,
                               style: TextStyle(fontSize: 20),
                             )
                           ],
@@ -86,7 +88,7 @@ class ShortTermState extends State<MatchingShortTerm>{
                             Text('모집인원',
                               style: TextStyle(fontSize: 20),
                             ),
-                            Text('${data[index].currentPeople}/${data[index].needPeople}',
+                            Text('${outputData[index].currentPeople}/${outputData[index].needPeople}',
                               style: TextStyle(fontSize: 20),)
                           ],
                         ),
@@ -96,7 +98,7 @@ class ShortTermState extends State<MatchingShortTerm>{
                             Text('지역',
                               style: TextStyle(fontSize: 20),
                             ),
-                            Text(data[index].area,
+                            Text(outputData[index].area,
                               style: TextStyle(fontSize: 20),
                             )
                           ],

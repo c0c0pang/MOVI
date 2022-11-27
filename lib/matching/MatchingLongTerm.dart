@@ -48,66 +48,70 @@ class LongTermState extends State<MatchingLongTerm>{
   ];
   @override
   Widget build(BuildContext context) {
+    return print(context);
+  }
+
+  Widget print(BuildContext context){
     return ListView.separated(
       padding: const EdgeInsets.all(8),
       itemCount: data.length,
       itemBuilder: (context,int index){
         return Row(
-          children: [
-            Container(
-              width: 200,
-              height: 200,
-              color: Colors.lightBlue,
-            ),
-            Expanded(
-              child: Container(
-                width: 380,
+            children: [
+              Container(
+                width: 200,
                 height: 200,
-                padding: EdgeInsets.all(30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(data[index].movieTitle,
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    Row(
+                color: Colors.lightBlue,
+              ),
+              Expanded(
+                  child: Container(
+                    width: 380,
+                    height: 200,
+                    padding: EdgeInsets.all(30),
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('날짜',
-                          style: TextStyle(fontSize: 20),
+                        Text(data[index].movieTitle,
+                          style: TextStyle(fontSize: 30),
                         ),
-                        Text(data[index].date,
-                          style: TextStyle(fontSize: 20),
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('날짜',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(data[index].date,
+                              style: TextStyle(fontSize: 20),
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('모집인원',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text('${data[index].currentPeople}/${data[index].needPeople}',
+                              style: TextStyle(fontSize: 20),)
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('지역',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(data[index].area,
+                              style: TextStyle(fontSize: 20),
+                            )
+                          ],
+                        ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('모집인원',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Text('${data[index].currentPeople}/${data[index].needPeople}',
-                          style: TextStyle(fontSize: 20),)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('지역',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Text(data[index].area,
-                          style: TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                  )
               )
-            )
 
-          ]
+            ]
         );
       },
       separatorBuilder: (context, int index)=>const Divider(
@@ -115,6 +119,4 @@ class LongTermState extends State<MatchingLongTerm>{
       ),
     );
   }
-
-
 }

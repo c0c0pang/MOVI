@@ -43,6 +43,41 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
           labelColor: Colors.black,  //선택된 Tab 의 label 색상
             unselectedLabelColor: Colors.black,  //선택되지 않은 Tab 의 label 색상
           ),
+          Row(
+            children:<Widget> [
+              Expanded(
+                child: OutlinedButton(onPressed: (){}, child: Text("장르",style: TextStyle(color: Colors.black),),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black12,
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),),),
+              Expanded(
+                  child: OutlinedButton(onPressed: (){}, child: Text("지역",style: TextStyle(color: Colors.black),),
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.black12,
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                    ),),),
+              Expanded(
+                child: OutlinedButton(onPressed: (){}, child: Text("날짜",style: TextStyle(color: Colors.black),),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black12,
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),),),
+              Expanded(
+                child: OutlinedButton(onPressed: (){}, child: Text("시간대",style: TextStyle(color: Colors.black),),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black12,
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),),),
+              Expanded(
+                child: OutlinedButton(onPressed: (){}, child: Text("인원",style: TextStyle(color: Colors.black),),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black12,
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),),),
+
+            ],
+          ),
           Expanded(
               child: TabBarView(
                 controller: _tc,
