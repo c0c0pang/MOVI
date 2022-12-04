@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './MatchingLongTerm.dart';
 import './MatchingShortTerm.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 class MATCH extends StatefulWidget {
   const MATCH({super.key});
 
@@ -10,6 +12,7 @@ class MATCH extends StatefulWidget {
 
 class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
   late TabController _tc;
+  DateTime? _dateTime=DateTime.now();
   @override
   void initState(){
     _tc = TabController(
@@ -58,7 +61,7 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                     ),),),
               Expanded(
-                child: OutlinedButton(onPressed: (){}, child: Text("날짜",style: TextStyle(color: Colors.black),),
+                child: OutlinedButton(onPressed: (){showDatePickerPop();}, child: Text("날짜",style: TextStyle(color: Colors.black),),
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.black12,
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -100,6 +103,26 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
       ),
     ),
     );
+  }
+
+  void showDatePickerPop() {
+    Future<DateTime?> selectedDate = showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), //초기값
+      firstDate: DateTime(2020), //시작일
+      lastDate: DateTime(2023), //마지막일
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark(), //다크 테마
+          child: child!,
+        );
+      },
+    );
+
+    selectedDate.then((dateTime) {
+      _dateTime=dateTime;
+      print(_dateTime);
+    });
   }
 }
 
@@ -239,4 +262,10 @@ class addMatchPage extends StatelessWidget{
     );
   }
 }
+
+
+
+
+
+
 

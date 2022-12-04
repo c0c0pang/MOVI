@@ -39,14 +39,17 @@ class mainChattingPage extends State<Chatting> with TickerProviderStateMixin {
           ),
           Container(
             height: 50,
-            child: TabBar(
-              controller: _tc,
-              tabs: [
-                Text('채팅방'),
-                Text('친구 목록'),
-              ],
-              labelColor: Colors.black,  //선택된 Tab 의 label 색상
-              unselectedLabelColor: Colors.black,  //선택되지 않은 Tab 의 label 색상
+            child: AppBar(
+              backgroundColor: Colors.white,
+              bottom: TabBar(
+                  controller: _tc,
+                  tabs: [
+                    Tab(child: Text('채팅방',
+                        style: TextStyle(color: Colors.black, fontSize: 18))),
+                    Tab(child: Text(
+                        '친구 목록', style: TextStyle(color: Colors.black, fontSize: 18))),
+                  ],indicatorColor: Colors.black,
+              ),
             )
           ),
           Expanded(
