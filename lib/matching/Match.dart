@@ -67,7 +67,7 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),),),
               Expanded(
-                child: OutlinedButton(onPressed: (){}, child: Text("시간대",style: TextStyle(color: Colors.black),),
+                child: OutlinedButton(onPressed: (){showTimePickerPop();}, child: Text("시간대",style: TextStyle(color: Colors.black),),
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.black12,
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -122,6 +122,16 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
     selectedDate.then((dateTime) {
       _dateTime=dateTime;
       print(_dateTime);
+    });
+  }
+
+  void showTimePickerPop() {
+    Future<TimeOfDay?> selectedTime = showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    selectedTime.then((timeOfDay) {
+      //선택한뒤의 행동
     });
   }
 }
