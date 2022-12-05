@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:moviproject/communication/Community.dart';
 class CreatePostPage extends StatefulWidget {
   const CreatePostPage({Key? key}) : super(key: key);
-  //https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?key=5f0acd5012ff760ae39f4b672cb31aee&targetDt=20220101
   @override
   State<CreatePostPage> createState() => _CreatePostPageState();
 }
@@ -30,23 +29,16 @@ class _CreatePostPageState extends State<CreatePostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: const BackButton(
+          color: Colors.black, // <-- SEE HERE
+        ),
         title: Text('영화평가 & 추천',
             style: TextStyle(color: Colors.black, fontSize: 22)),
         centerTitle: false,
       ),
       body: Column(
         children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Icon(
-          //       Icons.account_circle,
-          //       color: Colors.grey[1],
-          //       size: 35,
-          //     ),
-          //     Text('익명', style: TextStyle(height: 1.5, fontSize: 13)),
-          //   ],
-          // ),
           Flexible(child: Container(
             padding: EdgeInsets.only(left: 15,right: 15),
             child: TextField(
@@ -83,7 +75,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   content=value;
                 });
               },
-              maxLines: 10,
+              maxLines: 20,
 
               keyboardType: TextInputType.text
           ),
@@ -97,6 +89,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
             onPressed: (){
             var toDay = DateTime.now();
             String postKey=getRandomString(16);
+            var nobleGases = {'54': 'xenon'};
             fireStore.collection('Posts').doc(postKey).set({
               "key":postKey,
               "title":postTitle,
@@ -104,7 +97,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
               "user":'익명',
               "like":0,
               "reply":0,
-              "date":toDay
+              "date":toDay,
+              "test":nobleGases
             });
             Navigator.pop(context);
           },child: Text('게시물 올리기'),),

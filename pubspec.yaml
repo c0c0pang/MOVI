@@ -42,7 +42,7 @@ dependencies:
   intl: ^0.17.0
   http: ^0.13.5
   image_picker: ^0.8.6
-
+  swipedetector: ^1.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
