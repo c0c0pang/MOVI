@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../page/CreatePostPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../page/PostViewPage.dart';
-
+const menuFont = 'NanumSquareRound';
 class evaluation_recommend extends StatefulWidget {
   const evaluation_recommend({Key? key}) : super(key: key);
 
@@ -121,7 +121,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         Icons.swap_vert,
                         size: 25,
                       ),
-                      Text('최신순'),
+                      Text('최신순',style: TextStyle(fontFamily: menuFont)),
                     ],
                   )),
             ),
@@ -136,7 +136,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         Icons.thumb_up,
                         size: 25,
                       ),
-                      Text('좋아요순')
+                      Text('좋아요순',style: TextStyle(fontFamily: menuFont))
                     ],
                   )),
             ),
@@ -158,7 +158,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                 color: Colors.grey[100],
                 margin: EdgeInsets.all(3),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(5),
                 ),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   GestureDetector(
@@ -188,14 +188,14 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                                 ),
                                 Text('${items.docs[index]['user']}',
                                     style:
-                                        TextStyle(height: 1.5, fontSize: 13)),
+                                        TextStyle(height: 1.5, fontFamily: menuFont,fontSize: 13)),
                               ],
                             ),
                           ),
                           title: Container(
                             width: 200,
                             margin: EdgeInsets.only(top: 20),
-                            child: Text('제목 : ${items.docs[index]['title']}',
+                            child: Text('제목 : ${items.docs[index]['title']}',style: TextStyle(fontFamily: menuFont),
                                 maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
                           subtitle: Row(
@@ -205,7 +205,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                                 width: 200,
                                 child: Text(
                                   '내용 : ${items.docs[index]['explain']}',
-                                  style: TextStyle(height: 2),
+                                  style: TextStyle(height: 2,fontFamily: menuFont),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -225,7 +225,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                             children: [
                               Icon(Icons.favorite,
                                   size: 20, color: Colors.redAccent),
-                              Text('${items.docs[index]['like']}'),
+                              Text('${items.docs[index]['like']}',style: TextStyle(fontFamily: menuFont)),
                             ],
                           ),
                         ),
@@ -234,7 +234,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                           child: Row(
                             children: [
                               Icon(Icons.chat_bubble_outline, size: 20),
-                              Text('${items.docs[index]['reply']}'),
+                              Text('${items.docs[index]['reply']}',style: TextStyle(fontFamily: menuFont)),
                             ],
                           ),
                         ),
@@ -289,7 +289,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
             _showDialog();
           },
           child: Container(
-            margin: EdgeInsets.all(40),
+            margin: EdgeInsets.only(bottom: 35,right: 15),
             width: 60,
             height: 60,
             decoration: BoxDecoration(

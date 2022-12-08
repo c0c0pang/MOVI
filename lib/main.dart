@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './home/MoviHome.dart';
 import 'dart:async';
-
+const menuFont = 'NanumSquareRound';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -35,31 +35,33 @@ class MyApp extends StatelessWidget {
                   ],
                 ),
                 bottomNavigationBar: Container(
-                  margin: EdgeInsets.only(bottom: 5),
+                  height: 80,
                   child: TabBar(
-                    indicator:BoxDecoration(color: Colors.grey,) ,
+                    indicator:BoxDecoration(
+                      color: Colors.grey,
+                    ) ,
                     unselectedLabelColor: Colors.white,
                     labelColor: Colors.black87,
                     tabs: [
                       Tab(
                         icon: Icon(Icons.home),
-                        text: 'home',
+                        child: Text('홈',style: TextStyle(fontFamily: menuFont)),
                       ),
                       Tab(
-                        icon: Icon(Icons.chat),
-                        text: 'chat',
+                        icon: Icon(Icons.electric_bolt),
+                        child: Text('매칭',style: TextStyle(fontFamily: menuFont)),
                       ),
                       Tab(
                         icon: Icon(Icons.people),
-                        text: '커뮤니티',
+                        child: Text('커뮤니티',style: TextStyle(fontFamily: menuFont)),
                       ),
                       Tab(
-                        icon: Icon(Icons.home),
-                        text: 'home',
+                        icon: Icon(Icons.chat_bubble),
+                        child: Text('채팅',style: TextStyle(fontFamily: menuFont)),
                       ),
                       Tab(
                         icon: Icon(Icons.account_box_rounded),
-                        text: '프로필',
+                        child: Text('프로필',style: TextStyle(fontFamily: menuFont)),
                       ),
                     ],
                   ),

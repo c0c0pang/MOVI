@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './evaluation_recommend.dart';
 import 'package:get/get.dart';
+const menuFont = 'NanumSquareRound';
+
 class COMMUNITY extends StatefulWidget {
   const COMMUNITY({super.key});
 
@@ -17,24 +19,11 @@ class mainCommunityPage extends State<COMMUNITY> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(
-              '커뮤니티', style: TextStyle(color: Colors.black, fontSize: 25)),
+              '커뮤니티', style: TextStyle(color: Colors.black,fontFamily:menuFont,fontWeight: FontWeight.bold, fontSize: 25)),
           centerTitle: false,
-          bottom: TabBar(
-            tabs: [
-              Tab(child: Text('영화평가 & 추천',
-                  style: TextStyle(color: Colors.black, fontSize: 18))),
-              Tab(child: Text(
-                  '자유게시판', style: TextStyle(color: Colors.black, fontSize: 18)))
-            ], indicatorColor: Colors.black,
-          ),
-
+          elevation: 0,
         ),
-        body: TabBarView(
-          children: [
-            evaluation_recommend(),
-            evaluation_recommend(),
-          ],
-        ),
+        body: evaluation_recommend(),
       ),
     ));
   }
