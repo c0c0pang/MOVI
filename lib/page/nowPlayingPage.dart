@@ -6,7 +6,8 @@ import '../home/Poster_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:swipedetector/swipedetector.dart';
-
+import 'package:get/get.dart';
+import './moviInformationPage.dart';
 const apikey = 'bc44002962513d9b01bc57ea2304acc7';
 const baseApi = 'https://image.tmdb.org/t/p/original';
 const menuFont = 'NanumSquareRound';
@@ -22,6 +23,7 @@ class _NOWPlAYINGState extends State<NOWPlAYING> {
     initialPage: 0,
   );
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Future<dynamic> getJsonData() async {
     http.Response response = await http.get(Uri.parse(
@@ -96,20 +98,29 @@ class _NOWPlAYINGState extends State<NOWPlAYING> {
                                     ),
                                     Row(
                                       children: [
-                                        Container(
-                                          height: 200,
-                                          width: 150,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      '${baseApi}${snapshot.data[index]['poster_path']}'),
-                                                  //backdrop_path
-                                                  //poster_path
-                                                  fit: BoxFit.cover)),
+                                        GestureDetector(
+                                          child: Container(
+                                            height: 200,
+                                            width: 150,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        '${baseApi}${snapshot.data[index]['poster_path']}'),
+                                                    //backdrop_path
+                                                    //poster_path
+                                                    fit: BoxFit.cover)),
+                                          ),
+                                          onTap: (){
+                                            Get.to(MOVIINFORMATINS(),arguments: {
+                                              'poster' : '${baseApi}${snapshot.data[index]['poster_path']}',
+                                              'title' : '${snapshot.data[index]['original_title']}',
+                                              'id': '${snapshot.data[index]['id']}',
+                                            });
+                                          },
                                         ),
                                         Container(
                                           child: SingleChildScrollView(

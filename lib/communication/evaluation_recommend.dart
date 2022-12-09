@@ -14,6 +14,7 @@ class evaluation_recommend extends StatefulWidget {
 }
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
+
   List<Post> userTable = <Post>[
     Post(
       name: '익명5',

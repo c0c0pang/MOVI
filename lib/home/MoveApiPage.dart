@@ -9,6 +9,7 @@ import 'package:swipedetector/swipedetector.dart';
 import '../page/nowPlayingPage.dart';
 import '../page/upcomingPage.dart';
 import '../page/popularPage.dart';
+import 'dart:math';
 const apikey = 'bc44002962513d9b01bc57ea2304acc7';
 const baseApi = 'https://image.tmdb.org/t/p/original';
 const titleFont = 'Maplestory';
@@ -51,19 +52,7 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
 
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 5), (Timer timer) {
-      if (currentPage < 9) {
-        currentPage++;
-      } else {
-        currentPage = 0;
-      }
-
-      _PageController.animateToPage(
-        currentPage,
-        duration: Duration(milliseconds: 350),
-        curve: Curves.easeInBack,
-      );
-    });
+    currentPage = Random().nextInt(10);
   }
 
   Future<dynamic> getJsonData() async {
@@ -96,29 +85,13 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                           color: Colors.black12,
                         ))),
                         // color: Colors.grey,
-                        child: PageView.builder(
-                            controller: _PageController,
-                            onPageChanged: (value) {
-                            },
-                            itemCount: 10,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 450,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                                '${baseApi}${snapshot.data[index]['poster_path']}'),
-                                            fit: BoxFit.cover)),
-                                  ),
-                                ],
-                              );
-                            }),
+                        child:  Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      '${baseApi}${snapshot.data[currentPage]['poster_path']}'),
+                                  fit: BoxFit.cover)),
+                        ),
                       ),
                       Container(
                           alignment: Alignment(-0.8, 0),

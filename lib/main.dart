@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import './home/MoviHome.dart';
 import 'dart:async';
+import 'package:get/get.dart';
 const menuFont = 'NanumSquareRound';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         // debugShowCheckedModeBanner: false,
         home: Container(
           child: Container(

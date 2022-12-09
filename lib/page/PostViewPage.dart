@@ -13,6 +13,7 @@ class PostViewPage extends StatefulWidget {
 class _PostViewPageState extends State<PostViewPage> {
   @override
   Widget build(BuildContext context) {
+    print(Get.arguments);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
