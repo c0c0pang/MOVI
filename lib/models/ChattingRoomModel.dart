@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart'; //aaa
 import 'package:tuple/tuple.dart';
 class ChattingRoomModel {
   final String id; //해당 도큐먼트의 ID를 담기위함.

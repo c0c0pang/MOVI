@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:tuple/tuple.dart';
+import 'package:tuple/tuple.dart'; //aaa
 class UserModel {
   final int idkey; //해당 도큐먼트의 ID를 담기위함.
   final String id;
