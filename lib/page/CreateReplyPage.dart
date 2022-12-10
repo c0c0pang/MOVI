@@ -19,7 +19,9 @@ class _CreateReplyState extends State<CreateReply> {
   String postReply = '';
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20),
         padding: EdgeInsets.only(left: 5, right: 10),
         decoration: BoxDecoration(
           border: Border.all(),
@@ -29,22 +31,24 @@ class _CreateReplyState extends State<CreateReply> {
           children: [
             // Text('${widget.replyNum}'),
             Flexible(
-
               child: TextField(
-                  controller: replyController,
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                  decoration: InputDecoration(
-                    border: (InputBorder.none),
-                    hintStyle: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      postReply = value;
-                    });
-                  },
-                  keyboardType: TextInputType.text,
+                controller: replyController,
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+                decoration: InputDecoration(
+                  border: (InputBorder.none),
+                  hintStyle: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    postReply = value;
+                  });
+                },
+                onTap: (){
+
+                },
+                keyboardType: TextInputType.text,
               ),
             ),
             Container(
@@ -67,13 +71,13 @@ class _CreateReplyState extends State<CreateReply> {
                     });
                   });
 
-
                   replyController.clear();
                 },
               ),
             )
           ],
         ),
-      );
+      ),
+    );
   }
 }

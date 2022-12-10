@@ -9,7 +9,6 @@ Widget ReplyViewPage(postKey) {
       final itemsSize = replySnaphot.data?.data()?.length;
       print(itemsSize);
       print(items?['${0}']['who']);
-
       if(itemsSize!=null){
         return Container(
           height: 470,

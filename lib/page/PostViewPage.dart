@@ -24,7 +24,6 @@ class _PostViewPageState extends State<PostViewPage> {
             style: TextStyle(color: Colors.black, fontSize: 22)),
         centerTitle: false,
       ),
-      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
