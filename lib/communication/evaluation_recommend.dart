@@ -4,13 +4,17 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:get/get.dart';
 import '../page/CreatePostPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../page/PostViewPage.dart';
+const menuFont = 'NanumSquareRound';
 class evaluation_recommend extends StatefulWidget {
   const evaluation_recommend({Key? key}) : super(key: key);
+
   @override
   State<evaluation_recommend> createState() => _evaluation_recommendState();
 }
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
+
   List<Post> userTable = <Post>[
     Post(
       name: '익명5',
@@ -60,7 +64,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
   ];
   TextEditingController _tec = TextEditingController();
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onNewRefresh() async {
     await Future.delayed(Duration(microseconds: 100));
@@ -118,7 +122,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         Icons.swap_vert,
                         size: 25,
                       ),
-                      Text('최신순'),
+                      Text('최신순',style: TextStyle(fontFamily: menuFont)),
                     ],
                   )),
             ),
@@ -133,7 +137,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         Icons.thumb_up,
                         size: 25,
                       ),
-                      Text('좋아요순')
+                      Text('좋아요순',style: TextStyle(fontFamily: menuFont))
                     ],
                   )),
             ),
@@ -144,91 +148,108 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
   Widget _postCard() {
     // getData();
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
-      builder: (context,snapshot){
-        final items = snapshot.requireData;
-        return ListView.separated(
-          padding: EdgeInsets.all(8),
-          itemCount: items.size,
-          itemBuilder: (context, index) {
-            return Card(
-              color: Colors.grey[100],
-              margin: EdgeInsets.all(3),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Container(
-                  height: 60,
-                  padding: EdgeInsets.all(2),
-                  child: ListTile(
-                      leading: Container(
-                        margin: EdgeInsets.only(top: 1),
-                         child: Column(
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           children: [
-                             Icon(
-                               Icons.account_circle,
-                               color: Colors.grey[1],
-                               size: 35,
-                             ),
-                             Text('${items.docs[index]['user']}',
-                                 style: TextStyle(height: 1.5, fontSize: 13)),
-                           ],
-                         ),
-                      ),
-                      title: Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: Text('제목 : ${items.docs[index]['title']}'),
-                      ),
-                      subtitle: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 15),
-                            child: Text('내용 : ${items.docs[index]['explain']}',
-                                style: TextStyle(height: 2),maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+        stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
+        builder: (context, snapshot) {
+          final items = snapshot.requireData;
+          return ListView.separated(
+            padding: EdgeInsets.all(8),
+            itemCount: items.size,
+            itemBuilder: (context, index) {
+              return Card(
+                color: Colors.grey[100],
+                margin: EdgeInsets.all(3),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(PostViewPage(), arguments: {
+                        'user': '${items.docs[index]['user']}',
+                        'title': '${items.docs[index]['title']}',
+                        'explain': '${items.docs[index]['explain']}',
+                        'like': '${items.docs[index]['like']}',
+                        'key' : '${items.docs[index]['key']}',
+                        'reply' :items.docs[index]['reply']
+                      });
+                    },
+                    child: Container(
+                      height: 60,
+                      padding: EdgeInsets.all(2),
+                      child: ListTile(
+                          leading: Container(
+                            margin: EdgeInsets.only(top: 1),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.account_circle,
+                                  color: Colors.grey[1],
+                                  size: 35,
+                                ),
+                                Text('${items.docs[index]['user']}',
+                                    style:
+                                        TextStyle(height: 1.5, fontFamily: menuFont,fontSize: 13)),
+                              ],
                             ),
                           ),
-
-                        ],
-                      )),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 320, top: 10, right: 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.favorite,
-                                size: 20, color: Colors.redAccent),
-                            Text('${items.docs[index]['like']}'),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.chat_bubble_outline, size: 20),
-                            Text('${items.docs[index]['reply']}'),
-                          ],
-                        ),
-                      ),
-                    ],
+                          title: Container(
+                            width: 200,
+                            margin: EdgeInsets.only(top: 20),
+                            child: Text('제목 : ${items.docs[index]['title']}',style: TextStyle(fontFamily: menuFont),
+                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 15),
+                                width: 200,
+                                child: Text(
+                                  '내용 : ${items.docs[index]['explain']}',
+                                  style: TextStyle(height: 2,fontFamily: menuFont),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          )),
+                    ),
                   ),
-                )
-              ]),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Divider();
-          },
-        );
-      }
-    );
+                  Container(
+                    margin: EdgeInsets.only(bottom: 5),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.only(left: 320, top: 10, right: 10),
+                          child: Row(
+                            children: [
+                              Icon(Icons.favorite,
+                                  size: 20, color: Colors.redAccent),
+                              Text('${items.docs[index]['like']}',style: TextStyle(fontFamily: menuFont)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 10),
+                          child: Row(
+                            children: [
+                              Icon(Icons.chat_bubble_outline, size: 20),
+                              Text('${items.docs[index]['reply']}',style: TextStyle(fontFamily: menuFont)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return Divider();
+            },
+          );
+        });
   }
 
   Widget _postWrite() {
@@ -241,8 +262,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
             title: new Text("게시물 작성"),
             content: new Text("게시물을 작성 하시겠습니까?"),
             shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(8.0)
-            ),
+                borderRadius: BorderRadius.circular(8.0)),
             actions: <Widget>[
               new TextButton(
                 child: new Text("예"),
@@ -262,6 +282,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
         },
       );
     }
+
     return Container(
         alignment: Alignment.bottomRight,
         child: GestureDetector(
@@ -269,7 +290,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
             _showDialog();
           },
           child: Container(
-            margin: EdgeInsets.all(40),
+            margin: EdgeInsets.only(bottom: 35,right: 15),
             width: 60,
             height: 60,
             decoration: BoxDecoration(
