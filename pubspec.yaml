@@ -41,6 +41,8 @@ dependencies:
   intl: ^0.17.0
   http: ^0.13.5
   image_picker: ^0.8.6
+  tuple: ^2.0.1
+  fluttertoast: ^8.1.1
   swipedetector: ^1.2.0
   flutter_rating_bar: ^4.0.1
 dev_dependencies:
