@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; //aaaa
 import 'package:moviproject/models/FriendModel.dart';
 class FriendList extends StatefulWidget {
   const FriendList({Key? key}) : super(key: key);
