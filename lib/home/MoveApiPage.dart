@@ -24,16 +24,6 @@ class MOVEAPIPAGE extends StatefulWidget {
 class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
   int currentPage = 0;
   int moviCurrentPage = 0;
-  PageController _PageController = PageController(
-    initialPage: 0,
-    viewportFraction: 0.8,
-  );
-  PageController _MoviPageController = PageController(
-    initialPage: 0,
-  );
-  Color _color1 = Color(0xffEBEBEB);
-  Color _color2 = Color(0xffEBEBEB);
-  Color _color3 = Color(0xffEBEBEB);
   bool selected1 = true;
   bool selected2 = true;
   bool selected3 = true;
@@ -78,7 +68,7 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                   return Column(
                     children: [
                       Container(
-                        height: 525,
+                        height: 650,
                         decoration: BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
@@ -86,7 +76,17 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                         ))),
                         // color: Colors.grey,
                         child:  Container(
+                          width: 380,
                           decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(4.0, 3.0), //(x,y)
+                                  blurRadius: 4.0,
+                                  spreadRadius: 1.0,
+                                ),
+                              ],
+                            borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
                                   image: NetworkImage(
                                       '${baseApi}${snapshot.data[currentPage]['poster_path']}'),
@@ -118,7 +118,7 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     color: selected1 == true
-                                        ? Color(0xffD9D9D9)
+                                        ? Color(0xffCC2B2B)
                                         : Color(0xffEBEBEB),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -126,6 +126,7 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: menuFont,
+                                        color: Colors.white
                                       )),
                                   height: 20,
                                 ),
@@ -148,13 +149,14 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   decoration: BoxDecoration(
                                     color: selected2 == true
                                         ? Color(0xffEBEBEB)
-                                        : Color(0xffD9D9D9),
+                                        : Color(0xffCC2B2B),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text('현재상영작',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: menuFont,
+                                        color: Colors.white
                                       )),
                                 ),
                               ),
@@ -175,13 +177,14 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   decoration: BoxDecoration(
                                     color: selected3 == true
                                         ? Color(0xffEBEBEB)
-                                        : Color(0xffD9D9D9),
+                                        : Color(0xffCC2B2B),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text('상영예정작',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: menuFont,
+                                        color: Colors.white
                                       )),
                                 ),
                               ),

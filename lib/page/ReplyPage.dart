@@ -13,6 +13,7 @@ Widget ReplyViewPage(postKey) {
         return Container(
           height: 470,
           child: ListView.separated(
+            // physics:  const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount:  itemsSize,
@@ -39,7 +40,7 @@ Widget ReplyViewPage(postKey) {
 
       }
       else{
-        return Text('s');
+        return Text('');
       }
 
       },

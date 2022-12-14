@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import './MoveApiPage.dart';
-import 'package:get/get.dart';
 class MOVIHOME extends StatefulWidget {
-  const MOVIHOME({Key? key}) : super(key: key);
+  const  MOVIHOME({Key? key}) : super(key: key);
 
   @override
   State<MOVIHOME> createState() => _MOVEHOMEState();
@@ -16,7 +15,7 @@ class _MOVEHOMEState extends State<MOVIHOME> {
     if(searchTogle){
       return Flexible(
         child: Container(
-          alignment: Alignment(0.0, 0.0),
+          alignment: const Alignment(0.0, 0.0),
           width: 260,
           margin: EdgeInsets.only(left: 10, right: 5, top: 10, bottom: 10),
           decoration: new BoxDecoration(
@@ -31,7 +30,7 @@ class _MOVEHOMEState extends State<MOVIHOME> {
                   controller: _tec,
                   style: TextStyle(color: Colors.black),
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: '게시물 제목, 내용, 작성자 검색',
                     hintStyle: TextStyle(
@@ -61,7 +60,10 @@ class _MOVEHOMEState extends State<MOVIHOME> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Image.asset('assets/image/Logo.png'),
+        leading: Image.asset('assets/image/Asset.png',alignment: Alignment(18, 0)),
+
+        title: Image.asset('assets/image/Text.png'),
+        centerTitle: true,
         actions: [
           searchBar(),
           IconButton(

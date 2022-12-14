@@ -44,6 +44,7 @@ class ChatPageState extends State<ChatPage>{
   Widget build(BuildContext context){
     messageData=widget.data.content;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           iconTheme: IconThemeData(
               color: Colors.black
@@ -52,6 +53,7 @@ class ChatPageState extends State<ChatPage>{
           title:  Text(widget.data.roomTitle,
               style: TextStyle(color: Colors.black)),
           centerTitle: true,
+          elevation: 0,
         ),
         body: Container(
           child: Column(
@@ -76,7 +78,7 @@ class ChatPageState extends State<ChatPage>{
   }
 
   void _sendMessage(){
-    messageData.add(Tuple2(user_idkey,widget._userEnterMessage));
+    widget.data.content.add(Tuple2(user_idkey,widget._userEnterMessage));
     widget.textController.clear();
   }
 
@@ -88,7 +90,7 @@ class ChatPageState extends State<ChatPage>{
         children: [
           Expanded(
             child: TextField(
-              maxLines: null,
+              maxLines: 1,
               controller: widget.textController,
               decoration: InputDecoration(labelText: 'Send a message...'),
               onChanged: (value){
@@ -102,10 +104,13 @@ class ChatPageState extends State<ChatPage>{
             ),
           ),
           IconButton(
-            onPressed: _sendMessage,
+            onPressed: (){
+              setState(() {
+                _sendMessage();
+              });
+            },
             icon: Icon(Icons.send),
-            color: Colors.blue,
-
+            color: Color(0xffCC2B2B),
           ),
         ],
       ),
@@ -116,9 +121,10 @@ class ChatPageState extends State<ChatPage>{
         reverse: true,
         itemCount: messageData.length,
         itemBuilder: (context,int index){
-          int chatUseridIndex=findKey(messageData[index].item1);
-          bool isMe=user_idkey==messageData[index].item1;//나중에 join연산으로 하면 되는 기능
-          return chatBubble(isMe, index, chatUseridIndex);
+          int lastIndex=messageData.length-1;
+          int chatUseridIndex=findKey(messageData[lastIndex-index].item1);
+          bool isMe=user_idkey==messageData[lastIndex-index].item1;//나중에 join연산으로 하면 되는 기능
+          return chatBubble(isMe, lastIndex-index, chatUseridIndex);
         });
   }
 
@@ -213,7 +219,9 @@ class ChatPageState extends State<ChatPage>{
               Container(
                 child: Text("한 줄 소개"),
               ),
-              Container()
+              Container(
+                  child: Text("안녕하세요 저는 영화를 좋아합니다.")
+              )
             ],
           ),
         ),//한줄소개
@@ -222,7 +230,9 @@ class ChatPageState extends State<ChatPage>{
             Container(
               child: Text("지역"),
             ),
-            Container()
+            Container(
+                child: Text("서울")
+            )
           ],
         ),),//지역
         Container(child: Column(
@@ -230,24 +240,40 @@ class ChatPageState extends State<ChatPage>{
             Container(
               child: Text("관심 장르"),
             ),
-            Container()
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("액션"),
+                    Text("스릴러"),
+                    Text("로맨스"),
+                  ],
+                )
+            )
           ],
         ),),//관심장르
         Container(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               OutlinedButton(
                   onPressed: ()=> upTempurture(),
-                  child: Text("온도 올리기"),
+                  child: Text("온도 올리기",style: TextStyle(color: Colors.black,fontSize: 16)),
                   style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15))
                       )
                   )),
+              SizedBox(
+                width: 20,
+              ),
               OutlinedButton(
                   onPressed: ()=> downTempurture(),
-                  child: Text("온도 내리기"),
+                  child: Text("온도 내리기",style: TextStyle(color: Colors.black,fontSize: 16)),
                   style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       shape: const RoundedRectangleBorder(
