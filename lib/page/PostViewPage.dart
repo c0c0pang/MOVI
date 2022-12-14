@@ -13,13 +13,13 @@ class PostViewPage extends StatefulWidget {
 class _PostViewPageState extends State<PostViewPage> {
   @override
   Widget build(BuildContext context) {
-    print(Get.arguments);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: const BackButton(
-          color: Colors.black, // <-- SEE HERE
+          color: Colors.black,
         ),
+        elevation: 0,
         title: Text('영화평가 & 추천',
             style: TextStyle(color: Colors.black, fontSize: 22)),
         centerTitle: false,
@@ -88,7 +88,7 @@ class _PostViewPageState extends State<PostViewPage> {
         child: Container(
           margin: EdgeInsets.all(10),
           // padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          padding: EdgeInsets.only(bottom:00),
+          padding: EdgeInsets.only(bottom:0),
           child: CreateReply(
               postKey: '${Get.arguments['key']}',
               replyNum: Get.arguments['reply']),

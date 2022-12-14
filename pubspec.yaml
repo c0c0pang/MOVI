@@ -45,6 +45,7 @@ dependencies:
   fluttertoast: ^8.1.1
   swipedetector: ^1.2.0
   flutter_rating_bar: ^4.0.1
+  progresso: ^0.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,6 +74,12 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/image/Logo.png
+    - assets/image/boy1.png
+    - assets/image/boy2.png
+    - assets/image/girl1.png
+    - assets/image/girl2.png
+    - assets/image/Text.png
+    - assets/image/Asset.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

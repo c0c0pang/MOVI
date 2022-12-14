@@ -26,6 +26,7 @@ class _CreateReplyState extends State<CreateReply> {
         decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: BorderRadius.circular(10),
+          color: Color(0xffF5F1F1),
         ),
         child: Row(
           children: [
@@ -54,7 +55,7 @@ class _CreateReplyState extends State<CreateReply> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
-                icon: Icon(Icons.send),
+                icon: Icon(Icons.send,color: Color(0xffCC2B2B),),
                 onPressed: () {
                   setState(() {
                     fireStore.collection('Reply').doc('${widget.postKey}').set({

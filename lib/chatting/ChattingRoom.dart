@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart'; //aaaa
 import 'package:moviproject/models/ChattingRoomModel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tuple/tuple.dart';
-import './ChatPage.dart';
+import 'ChatPage.dart';
 import 'package:intl/intl.dart';
 
 class ChattingRoom extends StatefulWidget {
@@ -27,9 +26,9 @@ class ChattingRoomView extends State<ChattingRoom> {
             "길이테스트"),
         Tuple2(3,"3번의 채팅"),
         Tuple2(4,"4번의 채팅"),
-        Tuple2(1,"1번의 채팅"),
+        Tuple2(1,"다시 1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"심심심심심심하다"),
       ]
     ),
     ChattingRoomModel(
@@ -44,7 +43,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"),
       ],
     ),
     ChattingRoomModel(
@@ -59,7 +58,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"ㅠㅠㅠㅠㅠㅠ"),
       ],
     ),
     ChattingRoomModel(
@@ -74,7 +73,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"안녕하세요..."),
       ],
     ),
     ChattingRoomModel(
@@ -89,7 +88,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"저희 몇시에 만날까요?"),
       ],
     ),
     ChattingRoomModel(
@@ -104,7 +103,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"ㅋㅋㅋㅋㅋㅋㅋㅋㅋ"),
       ],
     ),
     ChattingRoomModel(
@@ -119,7 +118,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"ㅎㅇㅎㅇ"),
       ],
     ),
     ChattingRoomModel(
@@ -134,7 +133,7 @@ class ChattingRoomView extends State<ChattingRoom> {
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
+        Tuple2(2,"언제 모이나요?"),
       ],
     ),
     ChattingRoomModel(
@@ -143,13 +142,13 @@ class ChattingRoomView extends State<ChattingRoom> {
       icons: Icons.account_circle,
       timestamp: DateTime.utc(2022,11,28),
       content: <Tuple2<int,String>>[
+        Tuple2(2,"안녕하세요!"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(2,"2번의 채팅"),
         Tuple2(3,"3번의 채팅"),
         Tuple2(4,"4번의 채팅"),
         Tuple2(1,"1번의 채팅"),
         Tuple2(3,"3번의 채팅"),
-        Tuple2(2,"2번의 채팅"),
       ],
     ),
   ];
@@ -160,6 +159,7 @@ class ChattingRoomView extends State<ChattingRoom> {
       padding: const EdgeInsets.all(8),
       itemCount: data.length,
       itemBuilder: (context, int index) {
+        int lastIndexOfMessage=data[index].content.length-1;
         return Row(
             children: [
               Expanded(
@@ -183,11 +183,12 @@ class ChattingRoomView extends State<ChattingRoom> {
                             padding: EdgeInsets.only(top:25),
                           ),
                           subtitle: Container(
-                            child: Text(data[index].recentMessage),
+                            child: Text(data[index].content[lastIndexOfMessage].item2),
                             padding: EdgeInsets.only(top:5)
                           ),
                           leading: Icon(data[index].icons,size: 80),
                           onTap:(){
+                            print(data[index].content.length);
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context)=>ChatPage(data:data[index])),

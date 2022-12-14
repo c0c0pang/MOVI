@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
-import '../home/ApiModel.dart';
 import 'dart:async';
-import '../home/Poster_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:swipedetector/swipedetector.dart';
+import 'package:get/get.dart';
+import './moviInformationPage.dart';
 
 const apikey = 'bc44002962513d9b01bc57ea2304acc7';
 const baseApi = 'https://image.tmdb.org/t/p/original';
@@ -78,7 +77,7 @@ class _UPCOMINGState extends State<UPCOMING> {
                                                 Text('평점: ',
                                                     style: TextStyle(
                                                         fontSize: 18)),
-                                                Icon(Icons.star),
+                                                Icon(Icons.star,color: Color(0xffCC2B2B)),
                                                 Text(
                                                     '${snapshot.data[index]['vote_average']}',
                                                     style:
@@ -94,19 +93,29 @@ class _UPCOMINGState extends State<UPCOMING> {
                                     ),
                                     Row(
                                       children: [
-                                        Container(
-                                          height: 200,
-                                          width: 150,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 16),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      '${baseApi}${snapshot.data[index]['poster_path']}'),
-                                                  fit: BoxFit.cover)),
+                                        GestureDetector(
+                                          child: Container(
+                                            height: 200,
+                                            width: 150,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        '${baseApi}${snapshot.data[index]['poster_path']}'),
+                                                    fit: BoxFit.cover)),
+                                          ),
+                                          onTap: (){
+                                            Get.to(MOVIINFORMATINS(),arguments: {
+                                              'poster' : '${baseApi}${snapshot.data[index]['poster_path']}',
+                                              'title' : '${snapshot.data[index]['original_title']}',
+                                              'id': '${snapshot.data[index]['id']}',
+                                            });
+                                          },
                                         ),
+
                                         Container(
                                           child: SingleChildScrollView(
                                             child: Text(

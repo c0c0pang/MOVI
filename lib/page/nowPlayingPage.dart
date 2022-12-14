@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:core';
-import '../home/ApiModel.dart';
 import 'dart:async';
-import '../home/Poster_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:swipedetector/swipedetector.dart';
 import 'package:get/get.dart';
 import './moviInformationPage.dart';
 const apikey = 'bc44002962513d9b01bc57ea2304acc7';
@@ -81,7 +78,7 @@ class _NOWPlAYINGState extends State<NOWPlAYING> {
                                                 Text('평점: ',
                                                     style: TextStyle(
                                                         fontSize: 18)),
-                                                Icon(Icons.star),
+                                                Icon(Icons.star,color: Color(0xffCC2B2B)),
                                                 Text(
                                                     '${snapshot.data[index]['vote_average']}',
                                                     style:

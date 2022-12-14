@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+const menuFont = 'NanumSquareRound';
 const apikey = 'bc44002962513d9b01bc57ea2304acc7';
 
 class MOVIINFORMATINS extends StatefulWidget {
@@ -20,6 +21,12 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   TextEditingController reviewController = TextEditingController();
   String postReview = '';
+
+  final double _width = 265.0;
+  double _rating = 0.5;
+  int Num = 0;
+  int _length = 0;
+
   @override
   void initState() {
     super.initState();
@@ -36,8 +43,45 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
     }
   }
 
-  double _width = 265;
-  double _rating = 0.5;
+  void _showDialog(var id, var rating) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("관람평 작성"),
+          content: new Text("관람평을 작성 하시겠습니까?"),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          actions: <Widget>[
+            new TextButton(
+              child: new Text("예"),
+              onPressed: () {
+                setState(() {
+                  fireStore.collection('Review').doc('${id}').set({
+                    '익명${_length}': {
+                      'who': '익명${_length}',
+                      'star': rating * 2,
+                      'comment': postReview
+                    },
+                  }, SetOptions(merge: true));
+                });
+                reviewController.clear();
+
+                Navigator.pop(context);
+              },
+            ),
+            new TextButton(
+              child: new Text("아니요"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   //https://api.themoviedb.org/3/movie/436270?api_key=bc44002962513d9b01bc57ea2304acc7&language=ko-K
   Widget build(BuildContext context) {
@@ -46,7 +90,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
         leading: const BackButton(
           color: Colors.black, // <-- SEE HERE
         ),
-        title: Text('평점 및 관람평', style: TextStyle(color: Colors.black)),
+        title: Text('평점 및 관람평', style: TextStyle(color: Colors.black,fontFamily: menuFont,fontWeight: FontWeight.bold,fontSize: 23)),
         centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -59,8 +103,9 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
             } else {
               return SingleChildScrollView(
                 controller: _scrollController,
+                scrollDirection: Axis.vertical,
                 child: GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     FocusScope.of(context).unfocus();
                   },
                   child: Column(
@@ -78,7 +123,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                       image:
-                                      NetworkImage(Get.arguments['poster']),
+                                          NetworkImage(Get.arguments['poster']),
                                       //backdrop_path
                                       //poster_path
                                       fit: BoxFit.cover)),
@@ -86,11 +131,12 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                             Container(
                               height: 150,
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
                                     child: Text("제목: ${Get.arguments['title']}",
-                                        style: TextStyle(fontSize: 18)),
+                                        style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,fontFamily: menuFont)),
                                     width: _width,
                                   ),
                                   SizedBox(
@@ -132,14 +178,15 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                                   Container(
                                     child: Row(
                                       children: [
-                                        Text("관람객 평점",
+                                        Text("영화관 관람 평점",
                                             style: TextStyle(fontSize: 16)),
                                         SizedBox(
-                                          width: 60,
+                                          width: 31,
                                         ),
                                         Icon(
                                           Icons.star,
                                           size: 15,
+                                          color: Color(0xffCC2B2B),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -159,7 +206,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(width: 0.5))),
+                            border: Border(bottom: BorderSide(width: 0.2))),
                       ),
                       SizedBox(
                         height: 10,
@@ -175,7 +222,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                         itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, index) => Icon(
                           Icons.star_rounded,
-                          color: Colors.amber,
+                          color: Color(0xffCC2B2B),
                         ),
                         onRatingUpdate: (rating) {
                           setState(() {
@@ -208,7 +255,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                           maxLength: 300,
                           decoration: InputDecoration(
                             filled: true,
-                            fillColor: Colors.black12,
+                            fillColor: Color(0xffF5F1F1),
                             border: OutlineInputBorder(
                               borderRadius: const BorderRadius.all(
                                 const Radius.circular(10.0),
@@ -225,20 +272,140 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       GestureDetector(
-                        onTap: (){
-
+                        onTap: () {
+                          _showDialog(Get.arguments['id'], _rating);
                         },
                         child: Container(
                           width: 320,
+                          padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.grey
-                          ),
-                          child: Text('asd'),
+                              color: Color(0xffCC2B2B),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Text('관람평 올리기',
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white)),
                         ),
-                      )
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(width: 0.2))),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      StreamBuilder(
+                        stream: fireStore
+                            .collection('Review')
+                            .doc(Get.arguments['id'])
+                            .snapshots(),
+                        builder: (context, reviewSnaphot) {
+                          final items = reviewSnaphot.data?.data();
+                          final itemsSize = reviewSnaphot.data?.data()?.length;
+                          double sum = 0.0;
+                          if (itemsSize != null) {
+                            _length = itemsSize;
+                            for (var i = 0; i < itemsSize; i++) {
+                              sum += items?['익명${i}']['star'];
+                            }
+                            return Column(
+                              children: [
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Icon(
+                                        Icons.star_rounded,
+                                        size: 30,
+                                        color: Color(0xffCC2B2B),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text('회원 관람 평점',
+                                          style: TextStyle(fontSize: 20)),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${(sum / itemsSize).toStringAsFixed(1)}',
+                                        style: TextStyle(fontSize: 25),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: ListView.separated(
+                                    physics:  const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: itemsSize,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Container(
+                                          padding: EdgeInsets.all(10),
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          child: Column(
+                                            children: [
+                                              ListTile(
+                                                  title: Text(
+                                                    items?['익명${index}']['who'],
+                                                  ),
+                                                  subtitle: Row(
+                                                    children: [
+                                                      RatingBarIndicator(
+                                                        rating: items?['익명${index}']['star']/2,
+                                                        itemBuilder:
+                                                            (context, index) =>
+                                                                Icon(
+                                                          Icons.star_rounded,
+                                                          color: Color(0xffCC2B2B),
+                                                        ),
+                                                        itemCount: 5,
+                                                        itemSize: 30.0,
+
+                                                      ),
+                                                      Text(
+                                                          '${items?['익명${index}']['star']}'),
+                                                    ],
+                                                  )),
+                                              Container(
+                                                child: Text(
+                                                    '${items?['익명${index}']['comment']}'),
+                                                width: 360,
+                                              ),
+                                            ],
+                                          ));
+                                    },
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const Divider(
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Text('');
+                          }
+                        },
+                      ),
+                      // Container(
+                      //   child: Row(
+                      //     children: [
+                      //       Icon(Icons.star_rounded),
+                      //       Text('회원 관람 평점${}'),
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
