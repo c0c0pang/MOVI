@@ -165,7 +165,7 @@ class ChattingRoomView extends State<ChattingRoom> {
               Expanded(
                   child: Container(
                       height: 100,
-                      child: ListTile(
+                        child: ListTile(
                           title: Container(
                             child:Row(
                               children: [

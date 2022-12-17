@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:get/get.dart';
 const menuFont = 'NanumSquareRound';
 class EDITPROFILE extends StatefulWidget {
-  const EDITPROFILE({Key? key}) : super(key: key);
-
+  const EDITPROFILE({Key? key, required this.id}) : super(key: key);
+  final String id;
   @override
   State<EDITPROFILE> createState() => _EDITPROFILEState();
 }
@@ -21,6 +21,7 @@ class _EDITPROFILEState extends State<EDITPROFILE> {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   @override
   void _showDialog(String character,String name ) {
+    // print("ㅁㄴㅇ${Get.arguments["id"]}");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -34,7 +35,7 @@ class _EDITPROFILEState extends State<EDITPROFILE> {
             new TextButton(
               child: new Text("예"),
               onPressed: () {
-                fireStore.collection('User').doc('Data').update({
+                fireStore.collection('User').doc('${widget.id}').update({
                  'name': name,
                   'character' : character
                 });

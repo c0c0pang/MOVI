@@ -89,7 +89,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
             onPressed: (){
             var toDay = DateTime.now();
             String postKey=getRandomString(16);
-            var nobleGases = {'54': 'xenon'};
             fireStore.collection('Posts').doc(postKey).set({
               "key":postKey,
               "title":postTitle,
@@ -98,7 +97,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
               "like":0,
               "reply":0,
               "date":toDay,
-              "test":nobleGases
             });
             Navigator.pop(context);
           },child: Text('게시물 올리기'),),
