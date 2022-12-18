@@ -47,6 +47,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   progresso: ^0.3.0
   awesome_select: ^6.0.0
+  like_button: ^2.0.5
+  flutter_launcher_icons: ^0.9.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -57,7 +59,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -81,7 +82,13 @@ flutter:
     - assets/image/girl2.png
     - assets/image/Text.png
     - assets/image/Asset.png
-  # An image asset can refer to one or more resolution-specific "variants", see
+    - assets/image/매칭.png
+    - assets/image/채팅.png
+    - assets/image/커뮤니티.png
+    - assets/image/프로필.png
+    - assets/image/home.png
+
+    # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
   # For details regarding adding assets from package dependencies, see

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../page/ReplyPage.dart';
 import '../page/CreateReplyPage.dart';
+import 'package:like_button/like_button.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostViewPage extends StatefulWidget {
   const PostViewPage({Key? key}) : super(key: key);
@@ -11,6 +14,20 @@ class PostViewPage extends StatefulWidget {
 }
 
 class _PostViewPageState extends State<PostViewPage> {
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  int number = int.parse(Get.arguments['like']);
+  bool likecheck = Get.arguments['likecheck'];
+
+  setLike(int num, bool likeState) async {
+    await fireStore
+        .collection('Posts')
+        .doc(Get.arguments['key'])
+        .update({
+      'like': num,
+      'likecheck' : likeState
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,15 +81,25 @@ class _PostViewPageState extends State<PostViewPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child:
-                        Icon(Icons.favorite, size: 30, color: Colors.redAccent),
-                  ),
-                  Container(
                     margin: EdgeInsets.only(right: 20, left: 10, bottom: 10),
-                    child: Text(
-                      '${Get.arguments['like']}',
-                      style: TextStyle(color: Colors.grey[600], fontSize: 20),
+                    child: LikeButton(
+                      likeCount: number,
+                      isLiked: likecheck,
+                      onTap: (isLiked) {
+                        if (isLiked) {
+                          number -= 1;
+                          print(number);
+                          print(isLiked);
+                          setLike(number, !isLiked);
+                          return Future<bool>.value(false);
+                        } else {
+                          number += 1;
+                          print(number);
+                          print(isLiked);
+                          setLike(number, !isLiked);
+                          return Future<bool>.value(true);
+                        }
+                      },
                     ),
                   ),
                 ],
@@ -88,7 +115,7 @@ class _PostViewPageState extends State<PostViewPage> {
         child: Container(
           margin: EdgeInsets.all(10),
           // padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          padding: EdgeInsets.only(bottom:0),
+          padding: EdgeInsets.only(bottom: 0),
           child: CreateReply(
               postKey: '${Get.arguments['key']}',
               replyNum: Get.arguments['reply']),

@@ -19,6 +19,7 @@ class _LOGINState extends State<LOGIN> {
   String password = '';
   FirebaseFirestore fireStore=FirebaseFirestore.instance;
   getData(String _id,String _password) async{
+    print(_id.isEmpty);
     var check = await fireStore.collection("User").doc('${_id}').get();
     if(check.exists){
       var password_check = check.data();
