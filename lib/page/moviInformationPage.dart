@@ -54,7 +54,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
           actions: <Widget>[
-            new TextButton(
+            TextButton(
               child: new Text("예"),
               onPressed: () {
                 setState(() {
@@ -71,7 +71,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                 Navigator.pop(context);
               },
             ),
-            new TextButton(
+             TextButton(
               child: new Text("아니요"),
               onPressed: () {
                 Navigator.pop(context);
@@ -122,8 +122,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
-                                      image:
-                                          NetworkImage(Get.arguments['poster']),
+                                      image: NetworkImage(Get.arguments['poster']),
                                       //backdrop_path
                                       //poster_path
                                       fit: BoxFit.cover)),
@@ -152,6 +151,7 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                                     height: 10,
                                   ),
                                   Container(
+                                    width: _width,
                                     child: Row(
                                       children: [
                                         Text(
@@ -170,12 +170,12 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                                         )
                                       ],
                                     ),
-                                    width: _width,
                                   ),
                                   SizedBox(
                                     height: 20,
                                   ),
                                   Container(
+                                    width: _width,
                                     child: Row(
                                       children: [
                                         Text("영화관 관람 평점",
@@ -196,7 +196,6 @@ class _MOVIINFORMATINSState extends State<MOVIINFORMATINS> {
                                             style: TextStyle(fontSize: 16)),
                                       ],
                                     ),
-                                    width: _width,
                                   ),
                                 ],
                               ),

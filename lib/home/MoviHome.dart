@@ -61,7 +61,6 @@ class _MOVEHOMEState extends State<MOVIHOME> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: Image.asset('assets/image/Asset.png',alignment: Alignment(18, 0)),
-
         title: Image.asset('assets/image/Text.png'),
         centerTitle: true,
         actions: [

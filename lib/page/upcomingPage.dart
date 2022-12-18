@@ -64,7 +64,7 @@ class _UPCOMINGState extends State<UPCOMING> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                    '제목: ${snapshot.data[index]['original_title']}',
+                                                    '제목: ${snapshot.data?[index]['original_title']}',
                                                     style:
                                                     TextStyle(fontSize: 18),
                                                     textAlign: TextAlign.left),
@@ -79,7 +79,7 @@ class _UPCOMINGState extends State<UPCOMING> {
                                                         fontSize: 18)),
                                                 Icon(Icons.star,color: Color(0xffCC2B2B)),
                                                 Text(
-                                                    '${snapshot.data[index]['vote_average']}',
+                                                    '${snapshot.data?[index]['vote_average']}',
                                                     style:
                                                     TextStyle(fontSize: 18),
                                                     textAlign: TextAlign.left),
@@ -104,14 +104,14 @@ class _UPCOMINGState extends State<UPCOMING> {
                                                 BorderRadius.circular(10),
                                                 image: DecorationImage(
                                                     image: NetworkImage(
-                                                        '${baseApi}${snapshot.data[index]['poster_path']}'),
+                                                        '${baseApi}${snapshot.data?[index]['poster_path']}'),
                                                     fit: BoxFit.cover)),
                                           ),
                                           onTap: (){
                                             Get.to(MOVIINFORMATINS(),arguments: {
-                                              'poster' : '${baseApi}${snapshot.data[index]['poster_path']}',
-                                              'title' : '${snapshot.data[index]['original_title']}',
-                                              'id': '${snapshot.data[index]['id']}',
+                                              'poster' : '${baseApi}${snapshot.data?[index]['poster_path']}',
+                                              'title' : '${snapshot.data?[index]['original_title']}',
+                                              'id': '${snapshot.data?[index]['id']}',
                                             });
                                           },
                                         ),
@@ -119,7 +119,7 @@ class _UPCOMINGState extends State<UPCOMING> {
                                         Container(
                                           child: SingleChildScrollView(
                                             child: Text(
-                                                '${snapshot.data[index]['overview']}',
+                                                '${snapshot.data?[index]['overview']}',
                                                 style: TextStyle(fontSize: 18),
                                                 textAlign: TextAlign.left),
                                           ),

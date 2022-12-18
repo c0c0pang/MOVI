@@ -46,6 +46,7 @@ dependencies:
   swipedetector: ^1.2.0
   flutter_rating_bar: ^4.0.1
   progresso: ^0.3.0
+  awesome_select: ^6.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

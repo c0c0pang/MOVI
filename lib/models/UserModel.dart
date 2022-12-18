@@ -1,21 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tuple/tuple.dart'; //aaa
 class UserModel {
-  final int idkey; //해당 도큐먼트의 ID를 담기위함.
   final String id;
   final String password;
-  final String nickname;
-  final double mannerTempurture;
-  final IconData? icons;
+  final String name;
+  final double Tempurature;
+  //final IconData? icons;
 
   UserModel({
-    required this.idkey,
     this.id = '',
     this.password='',
-    this.nickname='',
-    this.mannerTempurture=0,
-    this.icons,
+    this.name='',
+    this.Tempurature=0,
+    //this.icons,
   });
 
+  factory UserModel.fromMap({required String id,required Map<String,dynamic> map}){
+    return UserModel(
+      id: id,
+      name: map['name']??'',
+      Tempurature: map['Tempurature']??'',
+    );
+  }
+
+  Map<String,dynamic> toMap(){
+    Map<String,dynamic> data = {};
+    data['name']=name;
+    data['Tempurature']=Tempurature;
+    return data;
+  }
 
 }

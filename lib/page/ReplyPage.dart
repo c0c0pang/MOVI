@@ -46,16 +46,3 @@ Widget ReplyViewPage(postKey) {
       },
       );
     }
-
-//Padding(padding: EdgeInsets.fromLTRB(40, 20, 40, 0),
-//         child: Column(
-//           children: [
-//             Container(
-//               child: Text(postKey),
-//             ),
-//             Container(
-//               child: Text(postKey),
-//             ),
-//           ],
-//         ),
-//       );

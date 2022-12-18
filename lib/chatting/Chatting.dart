@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart'; //aaa
-import 'ChattingRoom.dart';
+import 'LongChattingRoom.dart';
+import 'ShortChattingRoom.dart';
 const menuFont = 'NanumSquareRound';
 class Chatting extends StatefulWidget {
-  const Chatting({super.key});
+  final String id;
+  const Chatting({super.key,required this.id});
 
   @override
   State<Chatting> createState() => mainChattingPage();
@@ -28,8 +30,31 @@ class mainChattingPage extends State<Chatting> with TickerProviderStateMixin {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body:
-         ChattingRoom(),
+      body:Column(
+        children: [
+          TabBar(
+            controller: _tc,
+              tabs: [
+                Text('정기모임', style: TextStyle(fontSize: 18)),
+                Text('단기모임', style: TextStyle(fontSize: 18))
+              ],
+            labelColor: Colors.black,
+            //선택된 Tab 의 label 색상
+            unselectedLabelColor: Colors.black,
+            //선택되지 않은 Tab 의 label 색상
+            indicatorColor: Color(0xffCC2B2B),
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tc,
+              children: [
+                LongChattingRoom(id: widget.id),
+                ShortChattingRoom(id: widget.id),
+              ],
+            ),
+          ),
+        ],
+      )
     ),
     );
   }

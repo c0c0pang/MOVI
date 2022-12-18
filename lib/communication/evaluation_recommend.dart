@@ -5,16 +5,18 @@ import 'package:get/get.dart';
 import '../page/CreatePostPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../page/PostViewPage.dart';
+
 const menuFont = 'NanumSquareRound';
+
 class evaluation_recommend extends StatefulWidget {
-  const evaluation_recommend({Key? key}) : super(key: key);
+  const evaluation_recommend({Key? key, required this.id}) : super(key: key);
+  final String id;
 
   @override
   State<evaluation_recommend> createState() => _evaluation_recommendState();
 }
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
-
   List<Post> userTable = <Post>[
     Post(
       name: '익명5',
@@ -122,7 +124,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         Icons.swap_vert,
                         size: 25,
                       ),
-                      Text('최신순',style: TextStyle(fontFamily: menuFont)),
+                      Text('최신순', style: TextStyle(fontFamily: menuFont)),
                     ],
                   )),
             ),
@@ -137,7 +139,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         Icons.thumb_up,
                         size: 25,
                       ),
-                      Text('좋아요순',style: TextStyle(fontFamily: menuFont))
+                      Text('좋아요순', style: TextStyle(fontFamily: menuFont))
                     ],
                   )),
             ),
@@ -147,108 +149,127 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
 
   Widget _postCard() {
     // getData();
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot<Object?>>(
         stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
         builder: (context, snapshot) {
-          final items = snapshot.requireData;
-          return ListView.separated(
-            padding: EdgeInsets.all(8),
-            itemCount: items.size,
-            itemBuilder: (context, index) {
-              return Card(
-                color: Colors.grey[100],
-                margin: EdgeInsets.all(3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(PostViewPage(), arguments: {
-                        'user': '${items.docs[index]['user']}',
-                        'title': '${items.docs[index]['title']}',
-                        'explain': '${items.docs[index]['explain']}',
-                        'like': '${items.docs[index]['like']}',
-                        'key' : '${items.docs[index]['key']}',
-                        'reply' :items.docs[index]['reply']
-                      });
-                    },
-                    child: Container(
-                      height: 60,
-                      padding: EdgeInsets.all(2),
-                      child: ListTile(
+          final items = snapshot.data?.docs;
+          if(snapshot.hasData){
+            return ListView.separated(
+              padding: EdgeInsets.all(8),
+              itemCount: items!.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Colors.grey[100],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(PostViewPage(), arguments: {
+                          'user': '${items[index]['user']}',
+                          'title': '${items[index]['title']}',
+                          'explain': '${items[index]['explain']}',
+                          'like': '${items[index]['like']}',
+                          'key': '${items[index]['key']}',
+                          'reply': items[index]['reply']
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(2),
+
+                        child: ListTile(
                           leading: Container(
-                            margin: EdgeInsets.only(top: 1),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey[1],
-                                  size: 35,
+                                Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xff2B438D),
+                                      borderRadius: BorderRadius.circular(3)),
+                                  child: Image.asset(
+                                    'assets/image/${items[index]['character']}',
+                                    width: 29,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                                Text('${items.docs[index]['user']}',
-                                    style:
-                                        TextStyle(height: 1.5, fontFamily: menuFont,fontSize: 13)),
+                                Text('${items[index]['user']}',
+                                    style: TextStyle(
+                                        height: 1.5,
+                                        fontFamily: menuFont,
+                                        fontSize: 13)),
                               ],
                             ),
                           ),
                           title: Container(
                             width: 200,
                             margin: EdgeInsets.only(top: 20),
-                            child: Text('제목 : ${items.docs[index]['title']}',style: TextStyle(fontFamily: menuFont),
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: Text('제목 : ${items[index]['title']}',
+                                style: TextStyle(fontFamily: menuFont),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis),
                           ),
                           subtitle: Row(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(bottom: 15),
                                 width: 200,
                                 child: Text(
-                                  '내용 : ${items.docs[index]['explain']}',
-                                  style: TextStyle(height: 2,fontFamily: menuFont),
+                                  '내용 : ${items[index]['explain']}',
+                                  style: TextStyle(
+                                      height: 2, fontFamily: menuFont),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
-                          )),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          margin:
-                              EdgeInsets.only(left: 320, top: 10, right: 10),
-                          child: Row(
-                            children: [
-                              Icon(Icons.favorite,
-                                  size: 20, color: Colors.redAccent),
-                              Text('${items.docs[index]['like']}',style: TextStyle(fontFamily: menuFont)),
-                            ],
                           ),
+                          horizontalTitleGap: 20,
+
                         ),
-                        Container(
-                          margin: EdgeInsets.only(top: 10),
-                          child: Row(
-                            children: [
-                              Icon(Icons.chat_bubble_outline, size: 20),
-                              Text('${items.docs[index]['reply']}',style: TextStyle(fontFamily: menuFont)),
-                            ],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  )
-                ]),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
-          );
+                    Container(
+                      margin: EdgeInsets.only(bottom: 5),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin:
+                            EdgeInsets.only(left: 320, right: 10),
+                            child: Row(
+                              children: [
+                                Icon(Icons.favorite,
+                                    size: 20, color: Colors.redAccent),
+                                Text('${items[index]['like']}',
+                                    style: TextStyle(fontFamily: menuFont)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              children: [
+                                Icon(Icons.chat_bubble_outline, size: 20),
+                                Text('${items[index]['reply']}',
+                                    style: TextStyle(fontFamily: menuFont)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
+                );
+
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            );
+          }
+          else{
+            return Text('');
+          }
+
         });
   }
 
@@ -268,7 +289,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                 child: new Text("예"),
                 onPressed: () {
                   Navigator.pop(context);
-                  Get.to(CreatePostPage());
+                  Get.to(CreatePostPage(id: widget.id));
                 },
               ),
               new TextButton(
@@ -290,14 +311,14 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
             _showDialog();
           },
           child: Container(
-            margin: EdgeInsets.only(bottom: 35,right: 15),
+            margin: EdgeInsets.only(bottom: 35, right: 15),
             width: 60,
             height: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(1000),
               color: Color(0xffDE3425),
             ),
-            child: Icon(Icons.create, size: 30,color: Colors.white),
+            child: Icon(Icons.create, size: 30, color: Colors.white),
           ),
         ));
   }

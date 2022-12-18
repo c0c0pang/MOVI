@@ -71,7 +71,6 @@ class _CreateReplyState extends State<CreateReply> {
                       'reply': widget.replyNum! + 1,
                     });
                   });
-
                   replyController.clear();
                 },
               ),
