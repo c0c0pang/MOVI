@@ -57,6 +57,7 @@ class mainChattingPage extends State<Chatting> with TickerProviderStateMixin {
                 unselectedLabelColor: Colors.black,
                 //선택되지 않은 Tab 의 label 색상
                 indicatorColor: Color(0xffCC2B2B),
+              padding: EdgeInsets.only(left: 25,right: 25),
               ),
               Expanded(
                 child: TabBarView(

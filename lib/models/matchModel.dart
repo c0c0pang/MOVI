@@ -7,6 +7,8 @@ class MatchModel { //aaa
   final int currentPeople;
   final String area;
   final List<String> userList;
+  final String chatName;
+  final String poster_path;
 
   MatchModel({
     this.docID='',
@@ -17,6 +19,8 @@ class MatchModel { //aaa
     this.currentPeople=0,
     this.area='',
     required this.userList,
+    this.chatName='',
+    this.poster_path='',
   });
 
   factory MatchModel.fromMap({required String id,required Map<String,dynamic> map}){

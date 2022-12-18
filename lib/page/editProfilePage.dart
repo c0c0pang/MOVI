@@ -99,154 +99,157 @@ class _EDITPROFILEState extends State<EDITPROFILE> {
             SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      touch1 = true;
-                      touch2 = false;
-                      touch3 = false;
-                      touch4 = false;
-                      character = "boy1.png";
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: touch1 ? Colors.grey : Colors.white),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/image/boy1.png',
-                          width: _width,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text('잼민이',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: menuFont,
-                                fontWeight: touch1
-                                    ? FontWeight.bold
-                                    : FontWeight.normal)),
-                      ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        touch1 = true;
+                        touch2 = false;
+                        touch3 = false;
+                        touch4 = false;
+                        character = "boy1.png";
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: touch1 ? Colors.grey : Colors.white),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/image/boy1.png',
+                            width: _width,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text('잼민이',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: menuFont,
+                                  fontWeight: touch1
+                                      ? FontWeight.bold
+                                      : FontWeight.normal)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      touch1 = false;
-                      touch2 = true;
-                      touch3 = false;
-                      touch4 = false;
-                      character = "boy2.png";
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: touch2 ? Colors.grey : Colors.white),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/image/boy2.png', width: _width),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text('공대생',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: menuFont,
-                                fontWeight: touch2
-                                    ? FontWeight.bold
-                                    : FontWeight.normal)),
-                      ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        touch1 = false;
+                        touch2 = true;
+                        touch3 = false;
+                        touch4 = false;
+                        character = "boy2.png";
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: touch2 ? Colors.grey : Colors.white),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          Image.asset('assets/image/boy2.png', width: _width),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text('공대생',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: menuFont,
+                                  fontWeight: touch2
+                                      ? FontWeight.bold
+                                      : FontWeight.normal)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      touch1 = false;
-                      touch2 = false;
-                      touch3 = true;
-                      touch4 = false;
-                      character = "girl1.png";
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: touch3 ? Colors.grey : Colors.white),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/image/girl1.png', width: _width),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text('분홍이',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: menuFont,
-                                fontWeight: touch3
-                                    ? FontWeight.bold
-                                    : FontWeight.normal)),
-                      ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        touch1 = false;
+                        touch2 = false;
+                        touch3 = true;
+                        touch4 = false;
+                        character = "girl1.png";
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: touch3 ? Colors.grey : Colors.white),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          Image.asset('assets/image/girl1.png', width: _width),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text('분홍이',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: menuFont,
+                                  fontWeight: touch3
+                                      ? FontWeight.bold
+                                      : FontWeight.normal)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      touch1 = false;
-                      touch2 = false;
-                      touch3 = false;
-                      touch4 = true;
-                      character = "girl2.png";
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: touch4 ? Colors.grey : Colors.white),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      children: [
-                        Image.asset('assets/image/girl2.png', width: _width),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text('활발이',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: menuFont,
-                                fontWeight: touch4
-                                    ? FontWeight.bold
-                                    : FontWeight.normal)),
-                      ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        touch1 = false;
+                        touch2 = false;
+                        touch3 = false;
+                        touch4 = true;
+                        character = "girl2.png";
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: touch4 ? Colors.grey : Colors.white),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          Image.asset('assets/image/girl2.png', width: _width),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text('활발이',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: menuFont,
+                                  fontWeight: touch4
+                                      ? FontWeight.bold
+                                      : FontWeight.normal)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(
               height: 25,

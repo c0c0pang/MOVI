@@ -2,51 +2,211 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart'; //aaa
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:moviproject/chatting/Chatting.dart';
 import 'package:moviproject/models/matchModel.dart';
+
+const baseApi = 'https://image.tmdb.org/t/p/original';
 
 class MatchingLongTerm extends StatefulWidget {
   final String text;
   final String id;
-  const MatchingLongTerm({Key? key,required this.text,required this.id}) : super(key: key);
+
+  const MatchingLongTerm({Key? key, required this.text, required this.id})
+      : super(key: key);
+
   @override
   State<MatchingLongTerm> createState() => LongTermState();
 }
 
-class LongTermState extends State<MatchingLongTerm>{
-  String docID='';
-  String chatDocID='';
-  List addList=<String>[];
-  int docCurPeople=0;
+class LongTermState extends State<MatchingLongTerm> {
+  String docID = '';
+  String chatDocID = '';
+  List addList = <String>[];
+  int docCurPeople = 0;
+
   @override
   Widget build(BuildContext context) {
     if (widget.text == '') {
-      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>> (
+      return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Match/Eiyq0InEtTTkJPieAflk/longTerm').snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           final docs = snapshot.data?.docs;
-          if(snapshot.hasData){
+          if (snapshot.hasData) {
             return ListView.separated(
               padding: const EdgeInsets.all(8),
               itemCount: docs!.length,
               itemBuilder: (context, int index) {
-                return Row(
-                  children: [
-                    Expanded(
+                return GestureDetector(
+                  child: Card(
+                    elevation: 0,
+                    child: Container(
+                        height: 120,
+                        decoration: BoxDecoration(
+                            color: Color(0xffF3F3F3),
+                            borderRadius:BorderRadius.circular(10)
+                        ),
+                        child: Row(children: [
+                          Expanded(
+                            flex: 6,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        '${baseApi}${docs[index]['poster_path']}'),
+                                    fit: BoxFit.fill
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          Spacer(
+                            flex: 1,
+                          ),
+                          Expanded(
+                            flex: 14,
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  top: 5, right: 10),
+
+                              child: Column(
+                                children: <Widget>[
+
+                                  Text(docs[index]['movieTitle'],
+                                    style: TextStyle(fontSize: 20,fontFamily: menuFont),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text('날짜',
+                                        style: TextStyle(fontSize: 15,fontFamily: menuFont),
+                                      ),
+                                      Text(DateFormat('MM/dd').format(
+                                          docs[index]['date'].toDate()),
+                                        style: TextStyle(fontSize: 15,fontFamily: menuFont),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text('모집인원',
+                                        style: TextStyle(fontSize: 15,fontFamily: menuFont),
+                                      ),
+
+                                      Text(
+                                        '${docs[index]['currentPeople']}/${docs[index]['needPeople']}',
+                                        style: TextStyle(fontSize: 15,fontFamily: menuFont))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Text('지역',
+                                        style: TextStyle(fontSize: 15,fontFamily: menuFont),
+                                      ),
+                                      Text(docs[index]['area'],
+                                        style: TextStyle(fontSize: 15,fontFamily: menuFont),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],)
+                    ),
+                  ),
+                  onTap: () {
+                    if (docs[index]['userList'].contains(widget.id)) {
+                      Fluttertoast.showToast(
+                        msg: "이미 가입된 매칭입니다.",
+                        gravity: ToastGravity.BOTTOM,
+                      );
+                    }
+                    else {
+                      docID = docs[index].id;
+                      chatDocID = docs[index]['chatRoomid'];
+                      addList = docs[index]['userList'];
+                      docCurPeople = docs[index]['currentPeople'];
+                      print(chatDocID);
+                      showModalBottomSheet(
+                          context: context,
+                          builder: buildBottomSheet);
+                    }
+                  },
+                );
+              },
+              separatorBuilder: (context, int index) =>
+              const Divider(
+                height: 10.0,
+              ),
+            );
+          }
+          else {
+            return Text('');
+          }
+        },
+      );
+    }
+    else {
+      return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('Match/Eiyq0InEtTTkJPieAflk/longTerm').where(
+            'movieTitle', isEqualTo: widget.text).snapshots(),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          final docs = snapshot.data?.docs;
+          if (snapshot.hasData) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemCount: docs!.length,
+              itemBuilder: (context, int index) {
+                return Expanded(
+                    child: GestureDetector(
+                      child: Card(
                         child: Container(
-                            child: ListTile(
-                              title: Container(
-                                child: Text(docs[index]['movieTitle'],
-                                  style: TextStyle(fontSize: 23),
+                            height: 120,
+                            padding: const EdgeInsets.all(0),
+                            child: Row(children: [
+                              Expanded(
+                                flex: 6,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              '${baseApi}${docs[index]['poster_path']}'),
+                                          fit: BoxFit.fill
+                                      )
+                                  ),
                                 ),
                               ),
-                              subtitle: Container(
-                                child: Column(
-                                  //mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      child: Row(
+                              Spacer(
+                                flex: 1,
+                              ),
+                              Expanded(
+                                flex: 14,
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Text(docs[index]['movieTitle'],
+                                        style: TextStyle(fontSize: 23),
+                                      ),
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment
                                             .spaceBetween,
                                         children: [
@@ -59,9 +219,7 @@ class LongTermState extends State<MatchingLongTerm>{
                                           )
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      child: Row(
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment
                                             .spaceBetween,
                                         children: [
@@ -73,9 +231,7 @@ class LongTermState extends State<MatchingLongTerm>{
                                             style: TextStyle(fontSize: 17),)
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      child: Row(
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment
                                             .spaceBetween,
                                         children: [
@@ -87,32 +243,32 @@ class LongTermState extends State<MatchingLongTerm>{
                                           )
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              onTap: () {
-                                if (docs[index]['userList'].contains(widget.id)) {
-                                  Fluttertoast.showToast(
-                                    msg: "이미 가입된 매칭입니다.",
-                                    gravity: ToastGravity.BOTTOM,
-                                  );
-                                }
-                                else {
-                                  docID=docs[index].id;
-                                  chatDocID=docs[index]['chatRoomid'];
-                                  addList=docs[index]['userList'];
-                                  docCurPeople=docs[index]['currentPeople'];
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: buildBottomSheet);
-                                }
-                              },
-                            )
-                        )
-                    )
-                  ],
-                );
+                              )
+                            ],)
+                        ),
+                      ),
+                      onTap: () {
+                        if (docs[index]['userList'].contains(widget.id)) {
+                          Fluttertoast.showToast(
+                            msg: "이미 가입된 매칭입니다.",
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                        }
+                        else {
+                          docID = docs[index].id;
+                          chatDocID = docs[index]['chatRoomid'];
+                          addList = docs[index]['userList'];
+                          docCurPeople = docs[index]['currentPeople'];
+                          print(chatDocID);
+                          showModalBottomSheet(
+                              context: context,
+                              builder: buildBottomSheet);
+                        }
+                      },
+                    ));
               },
               separatorBuilder: (context, int index) =>
               const Divider(
@@ -120,137 +276,35 @@ class LongTermState extends State<MatchingLongTerm>{
               ),
             );
           }
-          else{
+          else {
             return Text('');
           }
-
-        },
-      );
-    }
-    else{
-      return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('Match/Eiyq0InEtTTkJPieAflk/longTerm').where('movieTitle',isEqualTo: widget.text).snapshots(),
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          final docs = snapshot.data!.docs;
-          return ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: docs.length,
-            itemBuilder: (context, int index) {
-              return Row(
-                children: [
-                  Expanded(
-                      child: Container(
-                          child: ListTile(
-                            title: Container(
-                              child: Text(docs[index]['movieTitle'],
-                                style: TextStyle(fontSize: 23),
-                              ),
-                            ),
-                            subtitle: Container(
-                              child: Column(
-                                //mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Text('날짜',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        Text(DateFormat('MM/dd').format(
-                                            docs[index]['date'].toDate()),
-                                          style: TextStyle(fontSize: 17),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Text('모집인원',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        Text(
-                                          '${docs[index]['currentPeople']}/${docs[index]['needPeople']}',
-                                          style: TextStyle(fontSize: 17),)
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Text('지역',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        Text(docs[index]['area'],
-                                          style: TextStyle(fontSize: 17),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            onTap: () {
-                              if (docs[index]['userList'].contains(widget.id)) {
-                                Fluttertoast.showToast(
-                                  msg: "이미 가입된 매칭입니다.",
-                                  gravity: ToastGravity.BOTTOM,
-                                );
-                              }
-                              else {
-                                docID=docs[index].id;
-                                chatDocID=docs[index]['chatRoomid'];
-                                addList=docs[index]['userList'];
-                                docCurPeople=docs[index]['currentPeople'];
-                                print(chatDocID);
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: buildBottomSheet);
-                              }
-                            },
-                          )
-                      )
-                  )
-                ],
-              );
-            },
-            separatorBuilder: (context, int index) =>
-            const Divider(
-              height: 10.0,
-            ),
-          );
         },
       );
     }
   }
-  Widget buildBottomSheet(BuildContext context) {
 
+  Widget buildBottomSheet(BuildContext context) {
     return Container(
         child: Column(
           children: [
             Container(
-                child:Text("해당 매칭에 참가하시겠습니까?")
+                child: Text("해당 매칭에 참가하시겠습니까?")
             ),
 
             OutlinedButton(
-                onPressed: (){
+                onPressed: () {
                   addList.add(widget.id);
                   //매칭 리스트 추가
-                  FirebaseFirestore.instance.collection('Match/Eiyq0InEtTTkJPieAflk/longTerm')
+                  FirebaseFirestore.instance.collection(
+                      'Match/Eiyq0InEtTTkJPieAflk/longTerm')
                       .doc('$docID').update({
                     'userList': addList,
-                    'currentPeople': docCurPeople+1,
+                    'currentPeople': docCurPeople + 1,
                   });
                   //채팅 참가
-                  FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/longTerm')
+                  FirebaseFirestore.instance.collection(
+                      'ChatRoom/rPDUIQvCg3PBVxuq3gR6/longTerm')
                       .doc('$chatDocID').update({
                     'userList': addList,
                   });
@@ -271,7 +325,7 @@ class LongTermState extends State<MatchingLongTerm>{
 }
 
 
-void joinMessage(){
+void joinMessage() {
   //참가 데베 넣기
   Fluttertoast.showToast(
     msg: "참가되었습니다.",

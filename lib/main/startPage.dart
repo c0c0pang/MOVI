@@ -16,6 +16,7 @@ class START extends StatefulWidget {
 }
 
 class _STARTState extends State<START> {
+  final double size = 12.0;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -35,7 +36,7 @@ class _STARTState extends State<START> {
             ],
           ),
           bottomNavigationBar: Container(
-            height: 80,
+            height: 75,
             child: const TabBar(
               indicator: BoxDecoration(
                 // color: Colors.grey,
@@ -47,32 +48,32 @@ class _STARTState extends State<START> {
                   icon: Icon(Icons.home_rounded),
                   child: Text('홈',
                       style:
-                      TextStyle(fontFamily: menuFont, color: Colors.black)),
+                      TextStyle(fontFamily: menuFont, color: Colors.black,fontSize:12)),
 
                 ),
                 Tab(
                   icon: Icon(Icons.electric_bolt),
                   child: Text('매칭',
                       style:
-                      TextStyle(fontFamily: menuFont, color: Colors.black)),
+                      TextStyle(fontFamily: menuFont, color: Colors.black,fontSize:12)),
                 ),
                 Tab(
                   icon: Icon(Icons.people),
                   child: Text('커뮤니티',
                       style:
-                      TextStyle(fontFamily: menuFont, color: Colors.black)),
+                      TextStyle(fontFamily: menuFont, color: Colors.black,fontSize:12)),
                 ),
                 Tab(
                   icon: Icon(Icons.chat_bubble),
                   child: Text('채팅',
                       style:
-                      TextStyle(fontFamily: menuFont, color: Colors.black)),
+                      TextStyle(fontFamily: menuFont, color: Colors.black,fontSize:12)),
                 ),
                 Tab(
                   icon: Icon(Icons.account_box_rounded),
                   child: Text('프로필',
                       style:
-                      TextStyle(fontFamily: menuFont, color: Colors.black)),
+                      TextStyle(fontFamily: menuFont, color: Colors.black,fontSize:12)),
                 ),
               ],
             ),

@@ -69,11 +69,14 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                 } else {
                   return Column(
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
                       Container(
-                        height: 650,
+                        height: 580,
                         // color: Colors.grey,
                         child: Container(
-                          width: 380,
+                          width: 350,
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(

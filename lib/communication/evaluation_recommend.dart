@@ -17,71 +17,22 @@ class evaluation_recommend extends StatefulWidget {
 }
 
 class _evaluation_recommendState extends State<evaluation_recommend> {
-  List<Post> userTable = <Post>[
-    Post(
-      name: '익명5',
-      icons: Icons.account_circle,
-      title: '클레멘타인 이 영화 꼭 봐야함',
-      comments: "아무내용...",
-      like: 1,
-      reply: 5,
-      key: 5,
-    ),
-    Post(
-      name: '익명4',
-      icons: Icons.account_circle,
-      title: '바람둥이왕 신권일 이 영화 꼭 봐야함',
-      comments: "아무내용...",
-      like: 2,
-      reply: 5,
-      key: 4,
-    ),
-    Post(
-      name: '익명3',
-      icons: Icons.account_circle,
-      title: '잉여왕 이 영화 꼭 봐야함',
-      comments: "아무내용...",
-      like: 3,
-      reply: 6,
-      key: 3,
-    ),
-    Post(
-      name: '익명2',
-      icons: Icons.account_circle,
-      title: 'last stardust 이 영화 꼭 봐야함',
-      comments: "아무내용...",
-      like: 5,
-      reply: 2,
-      key: 2,
-    ),
-    Post(
-      name: '익명1',
-      icons: Icons.account_circle,
-      title: '패션왕 이 영화 꼭 보면 안돼',
-      comments: "아무내용...",
-      like: 4,
-      reply: 5,
-      key: 1,
-    ),
-  ];
   TextEditingController _tec = TextEditingController();
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  String text = '';
+  String type='date';
 
-  void _onNewRefresh() async {
-    await Future.delayed(Duration(microseconds: 100));
+  void _onNewRefresh() {
     setState(() {
-      userTable.sort((a, b) => b.key!.compareTo(a.key!));
+      type = 'date';
+      print(type);
     });
-    _refreshController.refreshCompleted();
   }
 
-  void _onLikeRefresh() async {
-    await Future.delayed(Duration(microseconds: 100));
+  void _onLikeRefresh() {
     setState(() {
-      userTable.sort((a, b) => b.like!.compareTo(a.like!));
+      type = 'like';
+      print(type);
     });
-    _refreshController.refreshCompleted();
   }
 
   @override
@@ -149,129 +100,257 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
 
   Widget _postCard() {
     // getData();
-    return StreamBuilder<QuerySnapshot<Object?>>(
-        stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
-        builder: (context, snapshot) {
-          final items = snapshot.data?.docs;
-          if(snapshot.hasData){
-            return ListView.separated(
-              padding: EdgeInsets.all(8),
-              itemCount: items!.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  color: Colors.grey[100],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Column(children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(PostViewPage(), arguments: {
-                          'user': '${items[index]['user']}',
-                          'title': '${items[index]['title']}',
-                          'explain': '${items[index]['explain']}',
-                          'like': '${items[index]['like']}',
-                          'key': '${items[index]['key']}',
-                          'reply': items[index]['reply'],
-                          'likecheck':items[index]['likecheck'],
-                        });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(2),
+    if(text==''){
+      return StreamBuilder<QuerySnapshot<Object?>>(
+          stream: FirebaseFirestore.instance.collection('Posts').orderBy('${type}',descending: true).snapshots(),
+          builder: (context, snapshot) {
+            final items = snapshot.data?.docs;
+            if(snapshot.hasData){
+              return ListView.separated(
+                padding: EdgeInsets.all(8),
+                itemCount: items!.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.grey[100],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(PostViewPage(), arguments: {
+                            'user': '${items[index]['user']}',
+                            'title': '${items[index]['title']}',
+                            'explain': '${items[index]['explain']}',
+                            'like': '${items[index]['like']}',
+                            'key': '${items[index]['key']}',
+                            'reply': items[index]['reply'],
+                            'likecheck':items[index]['likecheck'],
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(2),
 
-                        child: ListTile(
-                          leading: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          child: ListTile(
+                            leading: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xff2B438D),
+                                        borderRadius: BorderRadius.circular(3)),
+                                    child: Image.asset(
+                                      'assets/image/${items[index]['character']}',
+                                      width: 29,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Text('${items[index]['user']}',
+                                      style: TextStyle(
+                                          height: 1.5,
+                                          fontFamily: menuFont,
+                                          fontSize: 13)),
+                                ],
+                              ),
+                            ),
+                            title: Container(
+                              width: 200,
+                              margin: EdgeInsets.only(top: 20),
+                              child: Text('제목 : ${items[index]['title']}',
+                                  style: TextStyle(fontFamily: menuFont),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                            subtitle: Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xff2B438D),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  child: Image.asset(
-                                    'assets/image/${items[index]['character']}',
-                                    width: 29,
-                                    fit: BoxFit.fill,
+                                  width: 200,
+                                  child: Text(
+                                    '내용 : ${items[index]['explain']}',
+                                    style: TextStyle(
+                                        height: 2, fontFamily: menuFont),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Text('${items[index]['user']}',
-                                    style: TextStyle(
-                                        height: 1.5,
-                                        fontFamily: menuFont,
-                                        fontSize: 13)),
                               ],
                             ),
-                          ),
-                          title: Container(
-                            width: 200,
-                            margin: EdgeInsets.only(top: 20),
-                            child: Text('제목 : ${items[index]['title']}',
-                                style: TextStyle(fontFamily: menuFont),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              Container(
-                                width: 200,
-                                child: Text(
-                                  '내용 : ${items[index]['explain']}',
-                                  style: TextStyle(
-                                      height: 2, fontFamily: menuFont),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                          horizontalTitleGap: 20,
+                            horizontalTitleGap: 20,
 
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin:
-                            EdgeInsets.only(left: 310, right: 10),
-                            child: Row(
-                              children: [
-                                Icon(Icons.favorite,
-                                    size: 17, color: Colors.redAccent),
-                                Text('${items[index]['like']}',
-                                    style: TextStyle(fontFamily: menuFont)),
-                              ],
+                      Container(
+                        margin: EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          children: [
+                            Container(
+                              margin:
+                              EdgeInsets.only(left: 310, right: 5),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.favorite,
+                                      size: 15, color: Colors.redAccent),
+                                  Text('${items[index]['like']}',
+                                      style: TextStyle(fontFamily: menuFont)),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            child: Row(
-                              children: [
-                                Icon(Icons.chat_bubble_outline, size: 17),
-                                Text('${items[index]['reply']}',
-                                    style: TextStyle(fontFamily: menuFont)),
-                              ],
+                            Container(
+                              child: Row(
+                                children: [
+                                  Icon(Icons.chat_bubble_outline, size: 15),
+                                  Text('${items[index]['reply']}',
+                                      style: TextStyle(fontFamily: menuFont)),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                    ]),
+                  );
+
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              );
+            }
+            else{
+              return Text('');
+            }
+
+          });
+    }
+    else{
+      return StreamBuilder<QuerySnapshot<Object?>>(
+          stream: FirebaseFirestore.instance.collection('Posts').where('title',isEqualTo: text).snapshots(),
+          builder: (context, snapshot) {
+            final items = snapshot.data?.docs;
+            if(snapshot.hasData){
+              return ListView.separated(
+                padding: EdgeInsets.all(8),
+                itemCount: items!.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.grey[100],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                  ]),
-                );
+                    child: Column(children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(PostViewPage(), arguments: {
+                            'user': '${items[index]['user']}',
+                            'title': '${items[index]['title']}',
+                            'explain': '${items[index]['explain']}',
+                            'like': '${items[index]['like']}',
+                            'key': '${items[index]['key']}',
+                            'reply': items[index]['reply'],
+                            'likecheck':items[index]['likecheck'],
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(2),
 
-              },
-              separatorBuilder: (context, index) {
-                return Divider();
-              },
-            );
-          }
-          else{
-            return Text('');
-          }
+                          child: ListTile(
+                            leading: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: Color(0xff2B438D),
+                                        borderRadius: BorderRadius.circular(3)),
+                                    child: Image.asset(
+                                      'assets/image/${items[index]['character']}',
+                                      width: 29,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Text('${items[index]['user']}',
+                                      style: TextStyle(
+                                          height: 1.5,
+                                          fontFamily: menuFont,
+                                          fontSize: 13)),
+                                ],
+                              ),
+                            ),
+                            title: Container(
+                              width: 200,
+                              margin: EdgeInsets.only(top: 20),
+                              child: Text('제목 : ${items[index]['title']}',
+                                  style: TextStyle(fontFamily: menuFont),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                            subtitle: Row(
+                              children: [
+                                Container(
+                                  width: 200,
+                                  child: Text(
+                                    '내용 : ${items[index]['explain']}',
+                                    style: TextStyle(
+                                        height: 2, fontFamily: menuFont),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            horizontalTitleGap: 20,
 
-        });
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          children: [
+                            Container(
+                              margin:
+                              EdgeInsets.only(left: 310, right: 10),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.favorite,
+                                      size: 17, color: Colors.redAccent),
+                                  Text('${items[index]['like']}',
+                                      style: TextStyle(fontFamily: menuFont)),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Icon(Icons.chat_bubble_outline, size: 17),
+                                  Text('${items[index]['reply']}',
+                                      style: TextStyle(fontFamily: menuFont)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
+                  );
+
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              );
+            }
+            else{
+              return Text('');
+            }
+
+          });
+    }
+
   }
 
   Widget _postWrite() {
@@ -337,9 +416,8 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                 margin: EdgeInsets.only(left: 10, right: 5, top: 15),
                 padding: EdgeInsets.only(left: 5, right: 10),
                 decoration: new BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(width: 1, color: Colors.black12)),
+                    color: Color(0xffF5F1F1),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),),
                 child: Row(children: <Widget>[
                   Flexible(
                     child: Container(
@@ -349,11 +427,17 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: '게시물 제목, 내용, 작성자 검색',
+                            hintText: '게시물 제목 검색',
                             hintStyle: TextStyle(
                               color: Colors.grey,
                             )),
                         cursorColor: Colors.black12,
+                        onSubmitted: (String str) {
+                          setState(() {
+                            text = str;
+                          });
+                        },
+
                       ),
                     ),
                   ),

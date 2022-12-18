@@ -89,9 +89,9 @@ class _PROFILEState extends State<PROFILE> {
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.black12),
+                            color: Color(0xffCC2B2B)),
                         child: Text('프로필 수정',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 20,color: Colors.white),
                             textAlign: TextAlign.center),
                       ),
                     ),
@@ -126,9 +126,9 @@ class _PROFILEState extends State<PROFILE> {
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.black12),
+                            color: Color(0xffCC2B2B)),
                         child: Text('로그아웃',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 20,color: Colors.white),
                             textAlign: TextAlign.center),
                       ),
                     ),
