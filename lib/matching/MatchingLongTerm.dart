@@ -20,104 +20,110 @@ class LongTermState extends State<MatchingLongTerm>{
   @override
   Widget build(BuildContext context) {
     if (widget.text == '') {
-      return StreamBuilder(
+      return StreamBuilder<QuerySnapshot<Map<String, dynamic>>> (
         stream: FirebaseFirestore.instance
             .collection('Match/Eiyq0InEtTTkJPieAflk/longTerm').snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          final docs = snapshot.data!.docs;
-          return ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: docs.length,
-            itemBuilder: (context, int index) {
-              return Row(
-                children: [
-                  Expanded(
-                      child: Container(
-                          child: ListTile(
-                            title: Container(
-                              child: Text(docs[index]['movieTitle'],
-                                style: TextStyle(fontSize: 23),
+          final docs = snapshot.data?.docs;
+          if(snapshot.hasData){
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemCount: docs!.length,
+              itemBuilder: (context, int index) {
+                return Row(
+                  children: [
+                    Expanded(
+                        child: Container(
+                            child: ListTile(
+                              title: Container(
+                                child: Text(docs[index]['movieTitle'],
+                                  style: TextStyle(fontSize: 23),
+                                ),
                               ),
-                            ),
-                            subtitle: Container(
-                              child: Column(
-                                //mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Text('날짜',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        Text(DateFormat('MM/dd').format(
-                                            docs[index]['date'].toDate()),
-                                          style: TextStyle(fontSize: 17),
-                                        )
-                                      ],
+                              subtitle: Container(
+                                child: Column(
+                                  //mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          Text('날짜',
+                                            style: TextStyle(fontSize: 17),
+                                          ),
+                                          Text(DateFormat('MM/dd').format(
+                                              docs[index]['date'].toDate()),
+                                            style: TextStyle(fontSize: 17),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Text('모집인원',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        Text(
-                                          '${docs[index]['currentPeople']}/${docs[index]['needPeople']}',
-                                          style: TextStyle(fontSize: 17),)
-                                      ],
+                                    Container(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          Text('모집인원',
+                                            style: TextStyle(fontSize: 17),
+                                          ),
+                                          Text(
+                                            '${docs[index]['currentPeople']}/${docs[index]['needPeople']}',
+                                            style: TextStyle(fontSize: 17),)
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceBetween,
-                                      children: [
-                                        Text('지역',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        Text(docs[index]['area'],
-                                          style: TextStyle(fontSize: 17),
-                                        )
-                                      ],
+                                    Container(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          Text('지역',
+                                            style: TextStyle(fontSize: 17),
+                                          ),
+                                          Text(docs[index]['area'],
+                                            style: TextStyle(fontSize: 17),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            onTap: () {
-                              if (docs[index]['userList'].contains(widget.id)) {
-                                Fluttertoast.showToast(
-                                  msg: "이미 가입된 매칭입니다.",
-                                  gravity: ToastGravity.BOTTOM,
-                                );
-                              }
-                              else {
-                                docID=docs[index].id;
-                                chatDocID=docs[index]['chatRoomid'];
-                                addList=docs[index]['userList'];
-                                docCurPeople=docs[index]['currentPeople'];
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: buildBottomSheet);
-                              }
-                            },
-                          )
-                      )
-                  )
-                ],
-              );
-            },
-            separatorBuilder: (context, int index) =>
-            const Divider(
-              height: 10.0,
-            ),
-          );
+                              onTap: () {
+                                if (docs[index]['userList'].contains(widget.id)) {
+                                  Fluttertoast.showToast(
+                                    msg: "이미 가입된 매칭입니다.",
+                                    gravity: ToastGravity.BOTTOM,
+                                  );
+                                }
+                                else {
+                                  docID=docs[index].id;
+                                  chatDocID=docs[index]['chatRoomid'];
+                                  addList=docs[index]['userList'];
+                                  docCurPeople=docs[index]['currentPeople'];
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: buildBottomSheet);
+                                }
+                              },
+                            )
+                        )
+                    )
+                  ],
+                );
+              },
+              separatorBuilder: (context, int index) =>
+              const Divider(
+                height: 10.0,
+              ),
+            );
+          }
+          else{
+            return Text('');
+          }
+
         },
       );
     }

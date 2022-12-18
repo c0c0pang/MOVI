@@ -149,15 +149,16 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
 
   Widget _postCard() {
     // getData();
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<QuerySnapshot<Object?>>(
         stream: FirebaseFirestore.instance.collection('Posts').snapshots(),
         builder: (context, snapshot) {
-          final items = snapshot.requireData;
-          return ListView.separated(
-            padding: EdgeInsets.all(8),
-            itemCount: items.size,
-            itemBuilder: (context, index) {
-              return Card(
+          final items = snapshot.data?.docs;
+          if(snapshot.hasData){
+            return ListView.separated(
+              padding: EdgeInsets.all(8),
+              itemCount: items!.length,
+              itemBuilder: (context, index) {
+                return Card(
                   color: Colors.grey[100],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -166,17 +167,17 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                     GestureDetector(
                       onTap: () {
                         Get.to(PostViewPage(), arguments: {
-                          'user': '${items.docs[index]['user']}',
-                          'title': '${items.docs[index]['title']}',
-                          'explain': '${items.docs[index]['explain']}',
-                          'like': '${items.docs[index]['like']}',
-                          'key': '${items.docs[index]['key']}',
-                          'reply': items.docs[index]['reply']
+                          'user': '${items[index]['user']}',
+                          'title': '${items[index]['title']}',
+                          'explain': '${items[index]['explain']}',
+                          'like': '${items[index]['like']}',
+                          'key': '${items[index]['key']}',
+                          'reply': items[index]['reply']
                         });
                       },
                       child: Container(
                         padding: EdgeInsets.all(2),
-                        
+
                         child: ListTile(
                           leading: Container(
                             child: Column(
@@ -188,12 +189,12 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                                       color: Color(0xff2B438D),
                                       borderRadius: BorderRadius.circular(3)),
                                   child: Image.asset(
-                                    'assets/image/${items.docs[index]['character']}',
+                                    'assets/image/${items[index]['character']}',
                                     width: 29,
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                                Text('${items.docs[index]['user']}',
+                                Text('${items[index]['user']}',
                                     style: TextStyle(
                                         height: 1.5,
                                         fontFamily: menuFont,
@@ -204,7 +205,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                           title: Container(
                             width: 200,
                             margin: EdgeInsets.only(top: 20),
-                            child: Text('제목 : ${items.docs[index]['title']}',
+                            child: Text('제목 : ${items[index]['title']}',
                                 style: TextStyle(fontFamily: menuFont),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis),
@@ -214,7 +215,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                               Container(
                                 width: 200,
                                 child: Text(
-                                  '내용 : ${items.docs[index]['explain']}',
+                                  '내용 : ${items[index]['explain']}',
                                   style: TextStyle(
                                       height: 2, fontFamily: menuFont),
                                   maxLines: 1,
@@ -234,12 +235,12 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         children: [
                           Container(
                             margin:
-                                EdgeInsets.only(left: 320, right: 10),
+                            EdgeInsets.only(left: 320, right: 10),
                             child: Row(
                               children: [
                                 Icon(Icons.favorite,
                                     size: 20, color: Colors.redAccent),
-                                Text('${items.docs[index]['like']}',
+                                Text('${items[index]['like']}',
                                     style: TextStyle(fontFamily: menuFont)),
                               ],
                             ),
@@ -248,7 +249,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                             child: Row(
                               children: [
                                 Icon(Icons.chat_bubble_outline, size: 20),
-                                Text('${items.docs[index]['reply']}',
+                                Text('${items[index]['reply']}',
                                     style: TextStyle(fontFamily: menuFont)),
                               ],
                             ),
@@ -259,11 +260,16 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                   ]),
                 );
 
-            },
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
-          );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            );
+          }
+          else{
+            return Text('');
+          }
+
         });
   }
 

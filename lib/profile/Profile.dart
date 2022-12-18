@@ -44,97 +44,101 @@ class _PROFILEState extends State<PROFILE> {
         ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance.collection('User').doc(widget.id).snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            print(snapshot.data);
-            return Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        color: Color(0xff2A428C),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Image.asset('assets/image/${snapshot.data?['character']}', height: 130),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text('무비 #${snapshot.data?['name']}', style: TextStyle(fontSize: 25)),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text('한줄 소개: ${snapshot.data?['comment']}', style: TextStyle(fontSize: 23)),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text('장르: ${snapshot.data?['genre']}', style: TextStyle(fontSize: 23)),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text('지역: ${snapshot.data?['area']}', style: TextStyle(fontSize: 23)),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.to(EDITPROFILE(id: snapshot.data?['id'],));
-                    },
-                    child: Container(
-                      width: 220,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black12),
-                      child: Text('프로필 수정',
-                          style: TextStyle(fontSize: 20),
-                          textAlign: TextAlign.center),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if(snapshot.hasData){
+              return Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Color(0xff2A428C),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Image.asset('assets/image/${snapshot.data?['character']}', height: 130),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('무비 #${snapshot.data?['name']}', style: TextStyle(fontSize: 25)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('한줄 소개: ${snapshot.data?['comment']}', style: TextStyle(fontSize: 23)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('장르: ${snapshot.data?['genre']}', style: TextStyle(fontSize: 23)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('지역: ${snapshot.data?['area']}', style: TextStyle(fontSize: 23)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(EDITPROFILE(id: snapshot.data?['id'],));
+                      },
+                      child: Container(
+                        width: 220,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black12),
+                        child: Text('프로필 수정',
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center),
+                      ),
+                    ),
 
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    child: Text('현재 매너온도: ${snapshot.data?['Temperature'] * 10}',
-                        style: TextStyle(fontSize: 20)),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Progresso(
-                      progress: Temperature,
-                      progressStrokeCap: StrokeCap.round,
-                      backgroundStrokeCap: StrokeCap.round,
-                      progressColor: Color(0xffFF9669),
-                      progressStrokeWidth: 15,
-                      backgroundStrokeWidth: 9,
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 220,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black12),
-                      child: Text('로그아웃',
-                          style: TextStyle(fontSize: 20),
-                          textAlign: TextAlign.center),
+                    Container(
+                      child: Text('현재 매너온도: ${snapshot.data?['Temperature'] * 10}',
+                          style: TextStyle(fontSize: 20)),
                     ),
-                  ),
-                ],
-              ),
-            );
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Progresso(
+                        progress: Temperature,
+                        progressStrokeCap: StrokeCap.round,
+                        backgroundStrokeCap: StrokeCap.round,
+                        progressColor: Color(0xffFF9669),
+                        progressStrokeWidth: 15,
+                        backgroundStrokeWidth: 9,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 220,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.black12),
+                        child: Text('로그아웃',
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            else{
+              return Text('');
+            }
+
           },
         ));
   }

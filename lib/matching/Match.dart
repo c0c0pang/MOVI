@@ -5,10 +5,12 @@ import 'MatchingShortTerm.dart';
 import 'package:moviproject/models/matchModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:moviproject/chatting/newChat.dart';
+
 const menuFont = 'NanumSquareRound';
 
 class MATCH extends StatefulWidget {
-  const MATCH({super.key,required this.id});
+  const MATCH({super.key, required this.id});
+
   final String id;
 
   @override
@@ -17,9 +19,10 @@ class MATCH extends StatefulWidget {
 
 class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
   late TabController _tc;
-  String text='';
+  String text = '';
   DateTime? _dateTime = DateTime.now();
-  final firestore=FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
+
   @override
   void initState() {
     _tc = TabController(
@@ -30,6 +33,7 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
   }
 
   TextEditingController _tec = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,9 +67,9 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                           decoration: new BoxDecoration(
                               color: Colors.white,
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                               border:
-                              Border.all(width: 1, color: Colors.black12)),
+                                  Border.all(width: 1, color: Colors.black12)),
                           child: Row(children: <Widget>[
                             Flexible(
                               child: Container(
@@ -80,9 +84,9 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                                         color: Colors.grey,
                                       )),
                                   cursorColor: Colors.black12,
-                                  onSubmitted: (String str){
+                                  onSubmitted: (String str) {
                                     setState(() {
-                                      text=str;
+                                      text = str;
                                     });
                                   },
                                 ),
@@ -119,8 +123,14 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
               child: TabBarView(
                 controller: _tc,
                 children: [
-                  MatchingLongTerm(text: text,id: widget.id,),
-                  MatchingShortTerm(text: text,id: widget.id,),
+                  MatchingLongTerm(
+                    text: text,
+                    id: widget.id,
+                  ),
+                  MatchingShortTerm(
+                    text: text,
+                    id: widget.id,
+                  ),
                 ],
               ),
             ),
@@ -134,8 +144,9 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                   bool isBack = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              addMatchPage(id: widget.id,)));
+                          builder: (context) => addMatchPage(
+                                id: widget.id,
+                              )));
                   if (isBack) {
                     setState(() {});
                   }
@@ -187,10 +198,9 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
 }
 
 class addMatchPage extends StatefulWidget {
-  const addMatchPage(
-      {Key? key,required this.id})
-      : super(key: key);
+  const addMatchPage({Key? key, required this.id}) : super(key: key);
   final String id;
+
   @override
   _AddMatchPage createState() => _AddMatchPage();
 }
@@ -210,295 +220,304 @@ class _AddMatchPage extends State<addMatchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('매칭 만들기',style: TextStyle(color: Colors.black,fontSize: 25,fontFamily: menuFont,fontWeight: FontWeight.bold)),
-        foregroundColor: Colors.black,
-        centerTitle: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-            width: 500,
-            height: 700,
-            padding: EdgeInsets.all(50),
-            margin: EdgeInsets.all(50),
-            decoration: BoxDecoration(
-                color: Colors.black45,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(70),
-                )),
-            child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              "지역",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontFamily: 'jua',
-                                  fontSize: 20,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Container(
-                              child: Flexible(
-                                  child: DropdownButton(
-                                    value: area,
-                                    items: areaList.map((value) {
-                                      return DropdownMenuItem(
-                                        value: value,
-                                        child: Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        area = value!;
-                                      });
-                                    },
-                                  )),
-                              width: 100, //TextField 크기
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 30,
-                        ),
-                        new Text(
-                          "날짜",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontFamily: 'jua',
-                              fontSize: 20,
-                              color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Container(
-                          child: Flexible(
-                            child: OutlinedButton(
-                              onPressed: () {
-                                showDatePickerPop();
+        appBar: AppBar(
+          title: Text('매칭 만들기',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontFamily: menuFont,
+                  fontWeight: FontWeight.bold)),
+          foregroundColor: Colors.black,
+          centerTitle: false,
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+              width: 500,
+              height: 700,
+              padding: EdgeInsets.all(50),
+              margin: EdgeInsets.all(50),
+              decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(70),
+                  )),
+              child: Container(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Text(
+                            "지역",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontFamily: 'jua',
+                                fontSize: 20,
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Container(
+                            child: Flexible(
+                                child: DropdownButton(
+                              value: area,
+                              items: areaList.map((value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  area = value!;
+                                });
                               },
-                              child: Text(
-                                "날짜",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                backgroundColor: Colors.black12,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                              ),
+                            )),
+                            width: 100, //TextField 크기
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 30,
+                      ),
+                      new Text(
+                        "날짜",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontFamily: 'jua',
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Container(
+                        child: Flexible(
+                          child: OutlinedButton(
+                            onPressed: () {
+                              showDatePickerPop();
+                            },
+                            child: Text(
+                              "날짜",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.black12,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
                             ),
                           ),
-                          width: 100, //TextField 크기
                         ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            new Text(
-                              "인원",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontFamily: 'jua',
-                                  fontSize: 20,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Container(
-                              child: new Flexible(
-                                child: new TextField(
-                                  controller: peopleTextController,
-                                  onChanged: (text) {
-                                    people = text;
-                                  },
-                                ),
-                              ),
-                              width: 100, //TextField 크기
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 30,
-                            ),
-                            new Text(
-                              "영화",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontFamily: 'jua',
-                                  fontSize: 20,
-                                  color: Colors.white),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Container(
-                              child: new Flexible(
-                                child: new TextField(
-                                  controller: movieTextController,
-                                  onChanged: (text) {
-                                    movie = text;
-                                  },
-                                ),
-                              ),
-                              width: 100, //TextField 크기
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 30,
-                        ),
-                        new Text(
-                          "기간",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontFamily: 'jua',
-                              fontSize: 20,
-                              color: Colors.white),
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Container(
-                          child: Flexible(
-                              child: DropdownButton(
-                                value: term,
-                                items: termList.map((value) {
-                                  return DropdownMenuItem(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    term = value!;
-                                  });
+                        width: 100, //TextField 크기
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                          ),
+                          new Text(
+                            "인원",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontFamily: 'jua',
+                                fontSize: 20,
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Container(
+                            child: new Flexible(
+                              child: new TextField(
+                                controller: peopleTextController,
+                                onChanged: (text) {
+                                  people = text;
                                 },
-                              )),
-                          width: 100, //TextField 크기
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Container(
-                              color: Colors.white54,
-                              child: OutlinedButton(
-                                onPressed: () {
-                                  if (people == '') {
-                                    print("입력이 멀쩡 하지 않습니다.");
-                                  } else {
-                                    MatchModel inputData=new MatchModel(
-                                      area: area,
-                                      date: _dateTime,
-                                      movieTitle: movie,
-                                      needPeople: int.parse(people),
-                                      userList: <String>[widget.id], //수정 필요
-                                    );
-                                    addMatchData(inputData,term=="장기");
-                                    Navigator.pop(context, true);
-                                  }
-                                },
-                                child: Text(
-                                  "게시물 올리기",
-                                  style: TextStyle(color: Colors.black),
-                                ),
                               ),
-                            ))
-                      ],
-                    )
-                  ],
-                ))),
-      )
-
-    );
+                            ),
+                            width: 100, //TextField 크기
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 30,
+                          ),
+                          new Text(
+                            "영화",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontFamily: 'jua',
+                                fontSize: 20,
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          Container(
+                            child: new Flexible(
+                              child: new TextField(
+                                controller: movieTextController,
+                                onChanged: (text) {
+                                  movie = text;
+                                },
+                              ),
+                            ),
+                            width: 100, //TextField 크기
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 30,
+                      ),
+                      new Text(
+                        "기간",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontFamily: 'jua',
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Container(
+                        child: Flexible(
+                            child: DropdownButton(
+                          value: term,
+                          items: termList.map((value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              term = value!;
+                            });
+                          },
+                        )),
+                        width: 100, //TextField 크기
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 230,
+                          child: Container(
+                        color: Colors.white54,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            if (people == '') {
+                              print("입력이 멀쩡 하지 않습니다.");
+                            } else {
+                              MatchModel inputData = new MatchModel(
+                                area: area,
+                                date: _dateTime,
+                                movieTitle: movie,
+                                needPeople: int.parse(people),
+                                userList: <String>[widget.id], //수정 필요
+                              );
+                              addMatchData(inputData, term == "장기");
+                              Navigator.pop(context, true);
+                            }
+                          },
+                          child: Text(
+                            "게시물 올리기",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ))
+                    ],
+                  )
+                ],
+              ))),
+        ));
   }
 
-  void addMatchData(MatchModel inputData,bool isLongTerm)async{
-    String term= isLongTerm? "longTerm" : "shortTerm";
+  void addMatchData(MatchModel inputData, bool isLongTerm) async {
+    String term = isLongTerm ? "longTerm" : "shortTerm";
     CollectionReference collection;
-    if(isLongTerm){
-      collection=FirebaseFirestore.instance
+    if (isLongTerm) {
+      collection = FirebaseFirestore.instance
           .collection('Match/Eiyq0InEtTTkJPieAflk/$term');
-    }
-    else{
-      collection=FirebaseFirestore.instance
+    } else {
+      collection = FirebaseFirestore.instance
           .collection('Match/Eiyq0InEtTTkJPieAflk/$term');
     }
 
     //채팅방 생성
-    DocumentReference df=await FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term').add({
+    DocumentReference df = await FirebaseFirestore.instance
+        .collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term')
+        .add({
       'recentMsg': "채팅방이 생성되었습니다.",
-      'recentMsgTime':DateTime.now(),
-      'roomTitle':"방이름",
-      'userList':inputData.userList,
+      'recentMsgTime': DateTime.now(),
+      'roomTitle': "방이름",
+      'userList': inputData.userList,
     });
-    String docid=df.id;
+    String docid = df.id;
 
     //_createChat(docid);
-    newChat().sendMessage(widget.id, "채팅방이 생성되었습니다.",
-         term, docid);
+    newChat().sendMessage(widget.id, "채팅방이 생성되었습니다.", term, docid);
 
     //add data
     collection.add({
-      'chatRoomid' :df.id,
+      'chatRoomid': df.id,
       'area': inputData.area,
       'date': inputData.date,
       'movieTitle': inputData.movieTitle,
-      'needPeople' :inputData.needPeople,
+      'needPeople': inputData.needPeople,
       'currentPeople': 1,
-      'userList' : inputData.userList,
+      'userList': inputData.userList,
       //list에 값 추가
     });
-
   }
-  void _createChat(String id)async{
-    final userData= await FirebaseFirestore.instance.collection('User').doc(widget.id).get();
-    FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term/$id/chat').add({
-      'id':widget.id,
-      'text':"채팅방이 생성되었습니다.",
-      'time':DateTime.now(),
-      'name':userData.data()!['name'],
+
+  void _createChat(String id) async {
+    final userData = await FirebaseFirestore.instance
+        .collection('User')
+        .doc(widget.id)
+        .get();
+    FirebaseFirestore.instance
+        .collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term/$id/chat')
+        .add({
+      'id': widget.id,
+      'text': "채팅방이 생성되었습니다.",
+      'time': DateTime.now(),
+      'name': userData.data()!['name'],
     });
   }
+
   void showDatePickerPop() {
     Future<DateTime?> selectedDate = showDatePicker(
       context: context,

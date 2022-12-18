@@ -101,6 +101,7 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                             style: TextStyle(fontSize: 30,fontFamily: menuFont,fontWeight: FontWeight.bold),
                           )),
                       Container(
+                        margin: EdgeInsets.only(top: 5),
                         child: Row(
                           children: [
                             Container(
@@ -191,7 +192,6 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                             ),
                           ],
                         ),
-                        margin: EdgeInsets.only(top: 5),
                       ),
                       SizedBox(
                         height: 10,

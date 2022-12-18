@@ -61,9 +61,9 @@ class ChatPageState extends State<ChatPage>{
   }
 
 
-  void _sendMessage(){
+  void _sendMessage() async {
     newChat().sendMessage(widget.id, widget._userEnterMessage, term, roomDoc);
-    FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term')
+    await FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term')
         .doc('$roomDoc').update({
       'recentMsg':widget._userEnterMessage,
       'recentMsgTime':DateTime.now(),
@@ -112,13 +112,18 @@ class ChatPageState extends State<ChatPage>{
         .collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term/$roomDoc/chat').orderBy('time',descending: true).snapshots(),
     builder: (BuildContext context,
     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-      final docs = snapshot.data!.docs;
-      return ListView.builder(
-          reverse: true,
-          itemCount: docs.length,
-          itemBuilder: (context,int index){
-            return chatBubble(docs[index]['id'],docs[index]['text'],docs[index]['time'],docs[index]['name']);
-          });
+      final docs = snapshot.data?.docs;
+      if(snapshot.hasData){
+        return ListView.builder(
+            reverse: true,
+            itemCount: docs!.length,
+            itemBuilder: (context,int index){
+              return chatBubble(docs[index]['id'],docs[index]['text'],docs[index]['time'],docs[index]['name']);
+            });
+      }
+     else{
+       return Text('');
+      }
     });
   }
 
@@ -192,7 +197,7 @@ class ChatPageState extends State<ChatPage>{
   }
   void inputname(String id) async{
     late String name;
-    final ref=FirebaseFirestore.instance.collection('User').doc(id);
+    final ref= FirebaseFirestore.instance.collection('User').doc(id);
     await ref.get().then(
             (DocumentSnapshot doc) {
           final data=doc.data() as Map<String,dynamic>;
@@ -206,102 +211,108 @@ class ChatPageState extends State<ChatPage>{
           .collection('User').where('id',isEqualTo: selectid).snapshots(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-        final docs=snapshot.data!.docs;
-        return ListView.separated(
-          itemCount: docs.length,
-          itemBuilder: (context,int index){
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  child: Icon(Icons.account_circle,size:100),
-                ),//아이콘
-                Container(
-                  child: Text(docs[index]['name']),
-                ),//닉네임
-                Container(
-                  child: Text(docs[index]["Temperature"].toString()),
-                ),//온도
-                Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Text("한 줄 소개"),
+        final docs=snapshot.data?.docs;
+        if(snapshot.hasData){
+
+          return ListView.separated(
+              itemCount: docs!.length,
+              itemBuilder: (context,int index){
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      child: Icon(Icons.account_circle,size:100),
+                    ),//아이콘
+                    Container(
+                      child: Text(docs[index]['name']),
+                    ),//닉네임
+                    Container(
+                      child: Text(docs[index]["Temperature"].toString()),
+                    ),//온도
+                    Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text("한 줄 소개"),
+                          ),
+                          Container(
+                              child: Text(docs[index]['comment'])
+                          )
+                        ],
                       ),
-                      Container(
-                          child: Text(docs[index]['comment'])
-                      )
-                    ],
-                  ),
-                ),//한줄소개
-                Container(child: Column(
-                  children: [
-                    Container(
-                      child: Text("지역"),
-                    ),
-                    Container(
-                        child: Text(docs[index]['area'])
-                    )
-                  ],
-                ),),//지역
-                Container(child: Column(
-                  children: [
-                    Container(
-                      child: Text("관심 장르"),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(docs[index]['genre'])
-                          ],
+                    ),//한줄소개
+                    Container(child: Column(
+                      children: [
+                        Container(
+                          child: Text("지역"),
+                        ),
+                        Container(
+                            child: Text(docs[index]['area'])
                         )
-                    )
-                  ],
-                ),),//관심장르
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      OutlinedButton(
-                          onPressed: (){
-                            selectUserTemp=docs[index]['Temperature'];
-                            upTempurture();},
-                          child: Text("온도 올리기",style: TextStyle(color: Colors.black,fontSize: 16)),
-                          style: OutlinedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15))
-                              )
-                          )),
-                      SizedBox(
-                        width: 20,
+                      ],
+                    ),),//지역
+                    Container(child: Column(
+                      children: [
+                        Container(
+                          child: Text("관심 장르"),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(docs[index]['genre'])
+                              ],
+                            )
+                        )
+                      ],
+                    ),),//관심장르
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          OutlinedButton(
+                              onPressed: (){
+                                selectUserTemp=docs[index]['Temperature'];
+                                upTempurture();},
+                              child: Text("온도 올리기",style: TextStyle(color: Colors.black,fontSize: 16)),
+                              style: OutlinedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(15))
+                                  )
+                              )),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          OutlinedButton(
+                              onPressed: (){
+                                selectUserTemp=docs[index]['Temperature'];
+                                downTempurture();},
+                              child: Text("온도 내리기",style: TextStyle(color: Colors.black,fontSize: 16)),
+                              style: OutlinedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(15))
+                                  )
+                              ))//오르기
+                        ],
                       ),
-                      OutlinedButton(
-                          onPressed: (){
-                            selectUserTemp=docs[index]['Temperature'];
-                            downTempurture();},
-                          child: Text("온도 내리기",style: TextStyle(color: Colors.black,fontSize: 16)),
-                          style: OutlinedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(15))
-                              )
-                          ))//오르기
-                    ],
-                  ),
-                ),//온도 버튼
-              ],
-            );
-          },
-          separatorBuilder: (context,int index)=>
+                    ),//온도 버튼
+                  ],
+                );
+              },
+              separatorBuilder: (context,int index)=>
               const Divider(
                 height: 10.0,
               )
           );
+        }
+        else{
+          return Text('');
+        }
       },
     );
   }
