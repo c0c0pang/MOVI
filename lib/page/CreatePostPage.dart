@@ -114,6 +114,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
               "reply":0,
               "date":toDay,
               "character":character,
+              "likecheck": false
             });
             Navigator.pop(context);
           },child: Text('게시물 올리기'),),

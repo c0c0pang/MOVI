@@ -10,16 +10,19 @@ import '../page/nowPlayingPage.dart';
 import '../page/upcomingPage.dart';
 import '../page/popularPage.dart';
 import 'dart:math';
+
 const apikey = 'bc44002962513d9b01bc57ea2304acc7';
 const baseApi = 'https://image.tmdb.org/t/p/original';
 const titleFont = 'Maplestory';
 const menuFont = 'NanumSquareRound';
+
 class MOVEAPIPAGE extends StatefulWidget {
   const MOVEAPIPAGE({Key? key}) : super(key: key);
 
   @override
   State<MOVEAPIPAGE> createState() => _MOVEAPIPAGEState();
 }
+
 //https://image.tmdb.org/t/p/original
 class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
   int currentPage = 0;
@@ -27,19 +30,18 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
   bool selected1 = true;
   bool selected2 = true;
   bool selected3 = true;
+
   Widget chartSelect() {
-    if(selected1 == true){
+    if (selected1 == true) {
       return POPULAR();
-    }
-    else if(selected2==false){
+    } else if (selected2 == false) {
       return NOWPlAYING();
-    }
-    else{
+    } else {
       return UPCOMING();
     }
   }
-  @override
 
+  @override
   void initState() {
     super.initState();
     currentPage = Random().nextInt(10);
@@ -69,13 +71,8 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                     children: [
                       Container(
                         height: 650,
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                          color: Colors.black12,
-                        ))),
                         // color: Colors.grey,
-                        child:  Container(
+                        child: Container(
                           width: 380,
                           decoration: BoxDecoration(
                               boxShadow: [
@@ -86,7 +83,7 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   spreadRadius: 1.0,
                                 ),
                               ],
-                            borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
                                   image: NetworkImage(
                                       '${baseApi}${snapshot.data[currentPage]['poster_path']}'),
@@ -98,7 +95,10 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                           margin: EdgeInsets.only(top: 20),
                           child: Text(
                             '무비차트',
-                            style: TextStyle(fontSize: 30,fontFamily: menuFont,fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 30,
+                                fontFamily: menuFont,
+                                fontWeight: FontWeight.bold),
                           )),
                       Container(
                         margin: EdgeInsets.only(top: 5),
@@ -125,10 +125,9 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   ),
                                   child: Text('인기작',
                                       style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: menuFont,
-                                        color: Colors.white
-                                      )),
+                                          fontSize: 16,
+                                          fontFamily: menuFont,
+                                          color: Colors.white)),
                                   height: 20,
                                 ),
                               ),
@@ -155,10 +154,9 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   ),
                                   child: Text('현재상영작',
                                       style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: menuFont,
-                                        color: Colors.white
-                                      )),
+                                          fontSize: 16,
+                                          fontFamily: menuFont,
+                                          color: Colors.white)),
                                 ),
                               ),
                             ),
@@ -183,10 +181,9 @@ class _MOVEAPIPAGEState extends State<MOVEAPIPAGE> {
                                   ),
                                   child: Text('상영예정작',
                                       style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: menuFont,
-                                        color: Colors.white
-                                      )),
+                                          fontSize: 16,
+                                          fontFamily: menuFont,
+                                          color: Colors.white)),
                                 ),
                               ),
                             ),

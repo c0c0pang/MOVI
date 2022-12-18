@@ -172,7 +172,8 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                           'explain': '${items[index]['explain']}',
                           'like': '${items[index]['like']}',
                           'key': '${items[index]['key']}',
-                          'reply': items[index]['reply']
+                          'reply': items[index]['reply'],
+                          'likecheck':items[index]['likecheck'],
                         });
                       },
                       child: Container(
@@ -235,11 +236,11 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                         children: [
                           Container(
                             margin:
-                            EdgeInsets.only(left: 320, right: 10),
+                            EdgeInsets.only(left: 310, right: 10),
                             child: Row(
                               children: [
                                 Icon(Icons.favorite,
-                                    size: 20, color: Colors.redAccent),
+                                    size: 17, color: Colors.redAccent),
                                 Text('${items[index]['like']}',
                                     style: TextStyle(fontFamily: menuFont)),
                               ],
@@ -248,7 +249,7 @@ class _evaluation_recommendState extends State<evaluation_recommend> {
                           Container(
                             child: Row(
                               children: [
-                                Icon(Icons.chat_bubble_outline, size: 20),
+                                Icon(Icons.chat_bubble_outline, size: 17),
                                 Text('${items[index]['reply']}',
                                     style: TextStyle(fontFamily: menuFont)),
                               ],

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import './MoveApiPage.dart';
+
 class MOVIHOME extends StatefulWidget {
-  const  MOVIHOME({Key? key}) : super(key: key);
+  const MOVIHOME({Key? key}) : super(key: key);
 
   @override
   State<MOVIHOME> createState() => _MOVEHOMEState();
@@ -11,8 +12,9 @@ class MOVIHOME extends StatefulWidget {
 class _MOVEHOMEState extends State<MOVIHOME> {
   TextEditingController _tec = TextEditingController();
   bool searchTogle = false;
-  Widget searchBar(){
-    if(searchTogle){
+
+  Widget searchBar() {
+    if (searchTogle) {
       return Flexible(
         child: Container(
           alignment: const Alignment(0.0, 0.0),
@@ -46,49 +48,51 @@ class _MOVEHOMEState extends State<MOVIHOME> {
           ]),
         ),
       );
-    }
-    else{
+    } else {
       return SizedBox(
         width: 0,
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: Image.asset('assets/image/Asset.png',alignment: Alignment(18, 0)),
+        leading:
+            Image.asset('assets/image/Asset.png', alignment: Alignment(18, 0)),
         title: Image.asset('assets/image/Text.png'),
         centerTitle: true,
         actions: [
-          searchBar(),
+          // searchBar(),
           IconButton(
-              onPressed: () {
-                setState(
-                  () {
-                    if (searchTogle) {
-                      searchTogle = false;
-                    } else {
-                      searchTogle = true;
-                    }
-                  },
-                );
-              },
-              icon: Icon(
-                Icons.search,
-                color: Colors.black,
-                size: 30,
-              )),
+            onPressed: () {
+              setState(
+                () {
+                  if (searchTogle) {
+                    searchTogle = false;
+                  } else {
+                    searchTogle = true;
+                  }
+                },
+              );
+            },
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
           IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.menu,
-                color: Colors.black,
-                size: 28,
-              )),
+            onPressed: () {},
+            icon: Icon(
+              Icons.menu,
+              color: Colors.black,
+              size: 28,
+            ),
+          ),
         ],
       ),
       body: MOVEAPIPAGE(),

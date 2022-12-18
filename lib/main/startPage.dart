@@ -48,6 +48,7 @@ class _STARTState extends State<START> {
                   child: Text('홈',
                       style:
                       TextStyle(fontFamily: menuFont, color: Colors.black)),
+
                 ),
                 Tab(
                   icon: Icon(Icons.electric_bolt),

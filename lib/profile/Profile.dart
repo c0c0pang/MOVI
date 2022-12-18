@@ -46,6 +46,7 @@ class _PROFILEState extends State<PROFILE> {
           stream: FirebaseFirestore.instance.collection('User').doc(widget.id).snapshots(),
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if(snapshot.hasData){
+              double ondo = snapshot.data?['Temperature']* 10;
               return Container(
                 alignment: Alignment.center,
                 child: Column(
@@ -99,7 +100,7 @@ class _PROFILEState extends State<PROFILE> {
                       height: 20,
                     ),
                     Container(
-                      child: Text('현재 매너온도: ${snapshot.data?['Temperature'] * 10}',
+                      child: Text('현재 매너온도: ${ (ondo.toStringAsFixed(1))}',
                           style: TextStyle(fontSize: 20)),
                     ),
                     Container(
