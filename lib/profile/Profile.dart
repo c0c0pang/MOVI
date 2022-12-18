@@ -40,6 +40,7 @@ class _PROFILEState extends State<PROFILE> {
                   fontWeight: FontWeight.bold)),
           centerTitle: false,
           elevation: 0,
+          automaticallyImplyLeading: false,
         ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance.collection('User').doc(widget.id).snapshots(),
@@ -64,6 +65,18 @@ class _PROFILEState extends State<PROFILE> {
                     height: 20,
                   ),
                   Text('무비 #${snapshot.data?['name']}', style: TextStyle(fontSize: 25)),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('한줄 소개: ${snapshot.data?['comment']}', style: TextStyle(fontSize: 23)),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('장르: ${snapshot.data?['genre']}', style: TextStyle(fontSize: 23)),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('지역: ${snapshot.data?['area']}', style: TextStyle(fontSize: 23)),
                   SizedBox(
                     height: 20,
                   ),

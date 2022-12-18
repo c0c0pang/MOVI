@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:moviproject/communication/Community.dart';
+const menuFont = 'NanumSquareRound';
 class CreatePostPage extends StatefulWidget {
-  const CreatePostPage({Key? key}) : super(key: key);
+  const CreatePostPage({Key? key,required this.id}) : super(key: key);
+  final String id;
   @override
   State<CreatePostPage> createState() => _CreatePostPageState();
 }
@@ -21,20 +23,34 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
   String _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   Random _rnd = Random();
-
+  String name = '';
+  String character = '';
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
+  getUser() async{
+    var Data = await fireStore.collection('User').doc('${widget.id}').get();
+    setState(() {
+      name = Data.data()?['name'];
+      character = Data.data()?['character'];
+    });
+    print(name);
+  }
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUser();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         leading: const BackButton(
           color: Colors.black, // <-- SEE HERE
         ),
         title: Text('영화평가 & 추천',
-            style: TextStyle(color: Colors.black, fontSize: 22)),
+            style: TextStyle(color: Colors.black, fontSize: 25,fontFamily: menuFont,fontWeight: FontWeight.bold)),
         centerTitle: false,
       ),
       body: Column(
@@ -82,7 +98,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
         )),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: Colors.grey,
+              backgroundColor: Color(0xffCC2B2B),
               minimumSize: Size(380, 40),
               textStyle: TextStyle(fontSize: 20)
           ),
@@ -93,10 +109,11 @@ class _CreatePostPageState extends State<CreatePostPage> {
               "key":postKey,
               "title":postTitle,
               "explain":content,
-              "user":'익명',
+              "user":name,
               "like":0,
               "reply":0,
               "date":toDay,
+              "character":character,
             });
             Navigator.pop(context);
           },child: Text('게시물 올리기'),),

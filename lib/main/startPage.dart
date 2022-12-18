@@ -28,10 +28,9 @@ class _STARTState extends State<START> {
           body: TabBarView(
             children: [
               MOVIHOME(),
-              MATCH(),
-              // LOGIN(),
-              COMMUNITY(),
-              Chatting(),
+              MATCH(id: widget.id),
+              COMMUNITY(id:widget.id),
+              Chatting(id:widget.id),
               PROFILE(id: widget.id),
             ],
           ),

@@ -5,15 +5,17 @@ class ChattingRoomModel {
   final String roomTitle;
   final String recentMessage;
   final IconData? icons;
-  final DateTime timestamp;
-  final List<Tuple2<int,String>> content;
+  final DateTime recentMsgTime;
+  final List<Tuple3<String,String,DateTime>> content; //nickname,msg,timestamp
+  final String recentMsg;
 
   ChattingRoomModel({
     this.id = '',
     this.roomTitle = '',
     this.recentMessage='',
     this.icons,
-    required this.timestamp,
+    required this.recentMsgTime,
     required this.content,
+    this.recentMsg='',
   });
 }

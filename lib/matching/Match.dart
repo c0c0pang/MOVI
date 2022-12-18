@@ -3,11 +3,13 @@ import 'package:intl/intl.dart';
 import './MatchingLongTerm.dart';
 import 'MatchingShortTerm.dart';
 import 'package:moviproject/models/matchModel.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:moviproject/chatting/newChat.dart';
 const menuFont = 'NanumSquareRound';
 
 class MATCH extends StatefulWidget {
-  const MATCH({super.key});
+  const MATCH({super.key,required this.id});
+  final String id;
 
   @override
   State<MATCH> createState() => mainMatchPage();
@@ -15,8 +17,9 @@ class MATCH extends StatefulWidget {
 
 class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
   late TabController _tc;
+  String text='';
   DateTime? _dateTime = DateTime.now();
-
+  final firestore=FirebaseFirestore.instance;
   @override
   void initState() {
     _tc = TabController(
@@ -26,88 +29,7 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
     super.initState();
   }
 
-  List<MatchModel> longData = <MatchModel>[
-    MatchModel(
-      movieTitle: "장기영화 제목1",
-      date: "1/30",
-      needPeople: 6,
-      currentPeople: 1,
-      area: "서울",
-      longTerm: true,
-    ),
-    MatchModel(
-      movieTitle: "장기영화 제목2",
-      date: "2/28",
-      needPeople: 4,
-      currentPeople: 1,
-      area: "대전",
-      longTerm: true,
-    ),
-    MatchModel(
-      movieTitle: "장기영화 제목3",
-      date: "3/16",
-      needPeople: 4,
-      currentPeople: 1,
-      area: "부산",
-      longTerm: true,
-    ),
-    MatchModel(
-      movieTitle: "장기영화 제목4",
-      date: "4/1",
-      needPeople: 6,
-      currentPeople: 1,
-      area: "대구",
-      longTerm: true,
-    ),
-    MatchModel(
-      movieTitle: "장기영화 제목5",
-      date: "5/15",
-      needPeople: 3,
-      currentPeople: 1,
-      area: "서울",
-      longTerm: true,
-    ),
-  ];
-  List<MatchModel> shortData = <MatchModel>[
-    MatchModel(
-      movieTitle: "영화 제목1",
-      date: "11/20",
-      needPeople: 4,
-      currentPeople: 1,
-      area: "서울",
-    ),
-    MatchModel(
-      movieTitle: "영화 제목2",
-      date: "11/20",
-      needPeople: 4,
-      currentPeople: 1,
-      area: "대전",
-    ),
-    MatchModel(
-      movieTitle: "영화 제목3",
-      date: "11/20",
-      needPeople: 4,
-      currentPeople: 1,
-      area: "부산",
-    ),
-    MatchModel(
-      movieTitle: "영화 제목4",
-      date: "11/20",
-      needPeople: 6,
-      currentPeople: 1,
-      area: "강릉",
-    ),
-    MatchModel(
-      movieTitle: "영화 제목5",
-      date: "11/20",
-      needPeople: 3,
-      currentPeople: 1,
-      area: "서울",
-    ),
-  ];
-
   TextEditingController _tec = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -153,11 +75,16 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: '게시물 제목, 내용, 작성자 검색',
+                                      hintText: '영화 제목 검색',
                                       hintStyle: TextStyle(
                                         color: Colors.grey,
                                       )),
                                   cursorColor: Colors.black12,
+                                  onSubmitted: (String str){
+                                    setState(() {
+                                      text=str;
+                                    });
+                                  },
                                 ),
                               ),
                             ),
@@ -179,7 +106,7 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
             TabBar(
               controller: _tc,
               tabs: [
-                Text('장기모임', style: TextStyle(fontSize: 18)),
+                Text('정기모임', style: TextStyle(fontSize: 18)),
                 Text('단기모임', style: TextStyle(fontSize: 18)),
               ],
               labelColor: Colors.black,
@@ -192,8 +119,8 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
               child: TabBarView(
                 controller: _tc,
                 children: [
-                  MatchingLongTerm(inputData: longData),
-                  MatchingShortTerm(inputData: shortData),
+                  MatchingLongTerm(text: text,id: widget.id,),
+                  MatchingShortTerm(text: text,id: widget.id,),
                 ],
               ),
             ),
@@ -208,8 +135,7 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              addMatchPage(
-                                  iLongData: longData, iShortData: shortData)));
+                              addMatchPage(id: widget.id,)));
                   if (isBack) {
                     setState(() {});
                   }
@@ -262,11 +188,9 @@ class mainMatchPage extends State<MATCH> with TickerProviderStateMixin {
 
 class addMatchPage extends StatefulWidget {
   const addMatchPage(
-      {Key? key, required this.iLongData, required this.iShortData})
+      {Key? key,required this.id})
       : super(key: key);
-  final List<MatchModel> iLongData;
-  final List<MatchModel> iShortData;
-
+  final String id;
   @override
   _AddMatchPage createState() => _AddMatchPage();
 }
@@ -274,20 +198,14 @@ class addMatchPage extends StatefulWidget {
 class _AddMatchPage extends State<addMatchPage> {
   final peopleTextController = TextEditingController();
   final movieTextController = TextEditingController();
-  String? area = '서울';
-  String date = '';
+  String area = '서울';
+  late Timestamp date;
   String people = '';
-  String? term = '장기';
-  String? movie = 'Black Adam';
+  String term = '장기';
+  String movie = '';
   DateTime _dateTime = DateTime.now();
   final List<String> areaList = ['서울', '인천', '수원', '대전', '대구', '광주', '부산'];
   final List<String> termList = ['장기', '단기'];
-  final List<String> movieList = [
-    'Black Adam',
-    'Woman King',
-    'R.I.P.D. 2: Rise of the Damned',
-    'Paradise City'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +264,7 @@ class _AddMatchPage extends State<addMatchPage> {
                                     }).toList(),
                                     onChanged: (value) {
                                       setState(() {
-                                        area = value;
+                                        area = value!;
                                       });
                                     },
                                   )),
@@ -452,7 +370,7 @@ class _AddMatchPage extends State<addMatchPage> {
                                 child: new TextField(
                                   controller: movieTextController,
                                   onChanged: (text) {
-                                    people = text;
+                                    movie = text;
                                   },
                                 ),
                               ),
@@ -490,7 +408,7 @@ class _AddMatchPage extends State<addMatchPage> {
                                 }).toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    term = value;
+                                    term = value!;
                                   });
                                 },
                               )),
@@ -508,29 +426,17 @@ class _AddMatchPage extends State<addMatchPage> {
                                   if (people == '') {
                                     print("입력이 멀쩡 하지 않습니다.");
                                   } else {
-                                    if (term == "장기") {
-                                      widget.iLongData.add(
-                                        MatchModel(
-                                            movieTitle: movie!,
-                                            date: DateFormat('MM/dd').format(
-                                                _dateTime),
-                                            needPeople: int.parse(people),
-                                            currentPeople: 1,
-                                            area: area!),
-                                      );
-                                    } else {
-                                      widget.iShortData.add(MatchModel(
-                                          movieTitle: movie!,
-                                          date: DateFormat('MM/dd').format(
-                                              _dateTime),
-                                          needPeople: int.parse(people),
-                                          currentPeople: 1,
-                                          area: area!));
-                                    }
+                                    MatchModel inputData=new MatchModel(
+                                      area: area,
+                                      date: _dateTime,
+                                      movieTitle: movie,
+                                      needPeople: int.parse(people),
+                                      userList: <String>[widget.id], //수정 필요
+                                    );
+                                    addMatchData(inputData,term=="장기");
                                     Navigator.pop(context, true);
                                   }
                                 },
-
                                 child: Text(
                                   "게시물 올리기",
                                   style: TextStyle(color: Colors.black),
@@ -546,6 +452,53 @@ class _AddMatchPage extends State<addMatchPage> {
     );
   }
 
+  void addMatchData(MatchModel inputData,bool isLongTerm)async{
+    String term= isLongTerm? "longTerm" : "shortTerm";
+    CollectionReference collection;
+    if(isLongTerm){
+      collection=FirebaseFirestore.instance
+          .collection('Match/Eiyq0InEtTTkJPieAflk/$term');
+    }
+    else{
+      collection=FirebaseFirestore.instance
+          .collection('Match/Eiyq0InEtTTkJPieAflk/$term');
+    }
+
+    //채팅방 생성
+    DocumentReference df=await FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term').add({
+      'recentMsg': "채팅방이 생성되었습니다.",
+      'recentMsgTime':DateTime.now(),
+      'roomTitle':"방이름",
+      'userList':inputData.userList,
+    });
+    String docid=df.id;
+
+    //_createChat(docid);
+    newChat().sendMessage(widget.id, "채팅방이 생성되었습니다.",
+         term, docid);
+
+    //add data
+    collection.add({
+      'chatRoomid' :df.id,
+      'area': inputData.area,
+      'date': inputData.date,
+      'movieTitle': inputData.movieTitle,
+      'needPeople' :inputData.needPeople,
+      'currentPeople': 1,
+      'userList' : inputData.userList,
+      //list에 값 추가
+    });
+
+  }
+  void _createChat(String id)async{
+    final userData= await FirebaseFirestore.instance.collection('User').doc(widget.id).get();
+    FirebaseFirestore.instance.collection('ChatRoom/rPDUIQvCg3PBVxuq3gR6/$term/$id/chat').add({
+      'id':widget.id,
+      'text':"채팅방이 생성되었습니다.",
+      'time':DateTime.now(),
+      'name':userData.data()!['name'],
+    });
+  }
   void showDatePickerPop() {
     Future<DateTime?> selectedDate = showDatePicker(
       context: context,
@@ -565,7 +518,6 @@ class _AddMatchPage extends State<addMatchPage> {
 
     selectedDate.then((dateTime) {
       _dateTime = dateTime!;
-      //print(_dateTime);
     });
   }
 }

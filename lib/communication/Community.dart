@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 const menuFont = 'NanumSquareRound';
 
 class COMMUNITY extends StatefulWidget {
-  const COMMUNITY({super.key});
-
+  const COMMUNITY ({Key? key,required this.id}) :super(key:key);
+  final String id;
   @override
   State<COMMUNITY> createState() => mainCommunityPage();
 }
@@ -25,8 +25,9 @@ class mainCommunityPage extends State<COMMUNITY> {
                     fontSize: 25)),
             centerTitle: false,
             elevation: 0,
+            automaticallyImplyLeading: false,
           ),
-          body: evaluation_recommend(),
+          body: evaluation_recommend(id:widget.id),
     );
   }
 }

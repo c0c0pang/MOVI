@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'signUp.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import './main/startPage.dart';
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(
-  );
-  runApp(const LOGIN());
-}
+
 
 class LOGIN extends StatefulWidget {
   const LOGIN({Key? key}) : super(key: key);
@@ -31,7 +25,7 @@ class _LOGINState extends State<LOGIN> {
       if(password_check?['password']==_password){
         idController.clear();
         passwordController.clear();
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> START(id: _id,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> START(id: _id)));
       }
       else{
         showDialog(
