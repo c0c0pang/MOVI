@@ -44,7 +44,10 @@ class _SIGNUPState extends State<SIGNUP> {
         'Temperature': 0.01,
         'character': 'boy1.png',
         'id': _id,
-        'password': _password
+        'password': _password,
+        "area":"",
+        "comment":"",
+        "genre":""
       });
       idController.clear();
       passwordController.clear();
@@ -189,7 +192,7 @@ class _SIGNUPState extends State<SIGNUP> {
                       );
                     });
                   }
-                  else if (password.length <= 6) {
+                  else if (password.length <= 5) {
                     showDialog(
                         context: context, builder: (BuildContext context) {
                       return AlertDialog(
